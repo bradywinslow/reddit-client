@@ -1,6 +1,7 @@
 import { Providers } from './providers';
 import type { Metadata } from 'next';
 import Header from './_components/Header';
+import SideNav from './_components/SideNav';
 
 export const metadata: Metadata = {
   title: "Reddit Video Games Feed",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Header />
+      <SideNav />
       <body>
         <Providers>{children}</Providers>
       </body>
