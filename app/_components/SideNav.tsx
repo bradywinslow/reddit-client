@@ -1,35 +1,39 @@
 import { 
     Button,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem } from '@chakra-ui/react'
+    Flex,
+    Heading,
+    Stack } from '@chakra-ui/react';
 
 export default function SideNav() {
     return (
-        <Menu>
-            <MenuButton as={Button}>
-                Subreddits
-            </MenuButton>
-            <MenuList>
-                <MenuItem>r/AndroidGaming</MenuItem>
-                <MenuItem>r/emulation</MenuItem>
-                <MenuItem>r/gamecollecting</MenuItem>
-                <MenuItem>r/gamemusic</MenuItem>
-                <MenuItem>r/gamephysics</MenuItem>
-                <MenuItem>r/gamernews</MenuItem>
-                <MenuItem>r/Games</MenuItem>
-                <MenuItem>r/gaming4gamers</MenuItem>
-                <MenuItem>r/gamingdetails</MenuItem>
-                <MenuItem>r/IndieGaming</MenuItem>
-                <MenuItem>r/MMORPG</MenuItem>
-                <MenuItem>r/patientgamers</MenuItem>
-                <MenuItem>r/randomactsofgaming</MenuItem>
-                <MenuItem>r/retrogaming</MenuItem>
-                <MenuItem>r/speedrun</MenuItem>
-                <MenuItem>r/truegaming</MenuItem>
-                <MenuItem>r/webgames</MenuItem>
-            </MenuList>
-        </Menu>
+        <Flex
+            ml={25}
+            pr={25}
+            w='250px'
+            borderRight='solid thin #d7d7d7'
+            height='100vh'
+            direction='column'
+        >
+            <Heading as='h2' size='sm' py={5} textAlign='center'>Subreddits</Heading>
+            <Stack spacing={5} align='start'>
+                <Button variant='ghost' w='100%' size='sm'>r/AndroidGaming</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/emulation</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gamecollecting</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gamemusic</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gamephysics</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gamernews</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/Games</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gaming4gamers</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/gamingdetails</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/IndieGaming</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/MMORPG</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/patientgamers</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/randomactsofgaming</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/retrogaming</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/speedrun</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/truegaming</Button>
+                <Button variant='ghost' w='100%' size='sm'>r/webgames</Button>
+            </Stack>
+        </Flex>
     )
 }

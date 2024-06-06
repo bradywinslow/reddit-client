@@ -1,21 +1,36 @@
+'use client'
+
 import {
     Flex,
     Heading,
-    Input } from '@chakra-ui/react'
+    Icon,
+    Input } from '@chakra-ui/react';
+import { SiReddit } from "react-icons/si";
+
 
 export default function Header() {
     return (
-        <Flex justify='center' mx={50} my={15}>
+        <Flex justify='center' align='center' borderBottom='solid thin #d7d7d7' height='75px'>
             <Flex
                 direction='row'
-                justify='space-between'
-                align='center' maxW='1200px'
+                justify='start'
+                align='center'
                 width='100%'
-                borderBottom='solid thin grey'
-                pb={15}
+                pl={5}
+                gap={2}
             >
-                <Heading as='h1'>Reddit Video Games Feed</Heading>
-                <Input variant='outline' placeholder='Search' size='lg' width={300} height={50} borderRadius={15}/>
+                <Icon as={SiReddit} boxSize={7} color='#ff6314' />
+                <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
+            </Flex>
+            <Flex pr={5}>
+                <Input
+                    variant='outline'
+                    placeholder='Search'
+                    size='lg'
+                    width={350}
+                    height={45}
+                    borderRadius={15}
+                />
             </Flex>
         </Flex>
     )
