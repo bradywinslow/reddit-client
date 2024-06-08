@@ -18,7 +18,7 @@ export default function SideNav() {
             overflowX='scroll'
         >
             <Heading as='h2' size='sm' py={5} textAlign='center'>Subreddits</Heading>
-            <Stack spacing={5} align='start'>
+            <Stack spacing={5} align='start' pb={5}>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/android-gaming'>r/AndroidGaming</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/emulation'>r/emulation</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/game-collecting'>r/gamecollecting</Link></Button>
