@@ -6,6 +6,7 @@ import {
     Icon,
     Input } from '@chakra-ui/react';
 import { SiReddit } from "react-icons/si";
+import Link from 'next/link';
 
 
 export default function Header() {
@@ -16,11 +17,16 @@ export default function Header() {
                 justify='start'
                 align='center'
                 width='100%'
+                height='100%'
                 pl={5}
                 gap={2}
             >
-                <Icon as={SiReddit} boxSize={7} color='#ff6314' />
-                <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
+                <Link href='/'>
+                    <Flex direction='row' align='center' width='100%' gap={2}>
+                        <Icon as={SiReddit} boxSize={7} color='#ff6314' />
+                        <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
+                    </Flex>
+                </Link>
             </Flex>
             <Flex pr={5}>
                 <Input
