@@ -1,4 +1,5 @@
 import { Providers } from './providers';
+import { Flex } from '@chakra-ui/react'
 import Header from './_components/Header';
 import SideNav from './_components/SideNav';
 
@@ -11,9 +12,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Header />
-          <SideNav />
-          {children}
+          <Flex direction='column'>
+            <Header />
+            <Flex direction='row'>
+              <SideNav />
+              <Flex justify='center' w='100%'>
+                {children}
+              </Flex>
+            </Flex>
+          </Flex>
         </Providers>
       </body>
     </html>
