@@ -1,3 +1,12 @@
+import { Flex } from "@chakra-ui/react";
+import SubHeader from "../_components/SubHeader";
+import MainContent from "../_components/MainContent";
+
 export default function GamePhysics() {
-    return <p>Game Physics</p>;
+    return (
+        <Flex direction='column' align='center' mx={7}>
+            <SubHeader text='Game Physics' />
+            <MainContent />
+        </Flex>
+    )
 }
