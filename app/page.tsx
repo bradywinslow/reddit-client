@@ -1,7 +1,11 @@
-import { Heading } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
+import MainContent from "./_components/MainContent";
 
 export default function Home() {
   return (
-    <Heading>Home</Heading>
+    <Flex direction='column' align='center' mx={7}>
+      <Heading>Home</Heading>
+      <MainContent />
+    </Flex>
   );
 }
