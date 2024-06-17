@@ -1,5 +1,5 @@
-const retrieveAndroidGamingData = async () => {
-    const urlToFetch = 'https://www.reddit.com/r/AndroidGaming.json';
+const retrieveSubredditData = async (page) => {
+    const urlToFetch = `https://www.reddit.com/r/${page}.json`;
 
     try {
         const response = await fetch(urlToFetch, {
@@ -17,3 +17,5 @@ const retrieveAndroidGamingData = async () => {
         console.error('Error during API call: ', error);
     }
 };
+
+export { retrieveSubredditData };
