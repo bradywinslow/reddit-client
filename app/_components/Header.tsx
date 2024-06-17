@@ -11,7 +11,14 @@ import Link from 'next/link';
 
 export default function Header() {
     return (
-        <Flex justify='center' align='center' borderBottom='solid thin #d7d7d7' height='75px'>
+        <Flex
+            justify='center'
+            align='center'
+            borderBottom='solid thin #d7d7d7'
+            height='75px'
+            position='sticky'
+            top='0'
+        >
             <Flex
                 direction='row'
                 justify='start'

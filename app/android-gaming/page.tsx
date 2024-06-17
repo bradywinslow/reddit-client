@@ -8,7 +8,12 @@ export default function AndroidGaming() {
     const page = 'android-gaming';
     
     return (
-        <Flex direction='column' align='center' mx={7}>
+        <Flex
+            direction='column'
+            align='center'
+            mx={7}
+            overflowX='scroll'
+        >
             <SubHeader text='Android Gaming' />
             <MainContent />
       </Flex>

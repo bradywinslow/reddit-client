@@ -13,9 +13,10 @@ export default function SideNav() {
             pr={25}
             w='250px'
             borderRight='solid thin #d7d7d7'
-            height='100vh'
+            h='100vh'
             direction='column'
             overflowX='scroll'
+            position='fixed'
         >
             <Heading as='h2' size='sm' py={5} textAlign='center'>Subreddits</Heading>
             <Stack spacing={5} align='start' pb={5}>
@@ -35,7 +36,7 @@ export default function SideNav() {
                 <Button variant='ghost' w='100%' size='sm'><Link href='/retro-gaming'>r/retrogaming</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/speedrun'>r/speedrun</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/true-gaming'>r/truegaming</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/web-games'>r/webgames</Link></Button>
+                <Button variant='ghost' w='100%' size='sm' mb='75px'><Link href='/web-games'>r/webgames</Link></Button>
             </Stack>
         </Flex>
     )
