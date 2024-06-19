@@ -1,21 +1,23 @@
 'use client'
 
-import { Flex } from "@chakra-ui/react";
-import SubHeader from "../_components/SubHeader";
-import MainContent from "../_components/MainContent";
+import { Flex } from '@chakra-ui/react';
+import Subreddit from '../_components/Subreddit';
+import { retrieveSubredditData } from '../reddit/httpRequests';
 
 export default function AndroidGaming() {
     const page = 'android-gaming';
     
+    function retrieveAndroidGamingData(page: string) {       
+        return retrieveSubredditData(page);
+    }
+
     return (
         <Flex
             direction='column'
             align='center'
-            mx={7}
-            overflowX='scroll'
+            mx='auto'
         >
-            <SubHeader text='Android Gaming' />
-            <MainContent />
+            <Subreddit data={retrieveAndroidGamingData} />
       </Flex>
     )
 }

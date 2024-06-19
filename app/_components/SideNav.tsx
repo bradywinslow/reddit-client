@@ -9,14 +9,16 @@ import Link from 'next/link';
 export default function SideNav() {
     return (
         <Flex
-            ml={25}
-            pr={25}
+            px={25}
+            mt='75px'
+            
             w='250px'
             borderRight='solid thin #d7d7d7'
-            h='100vh'
+            h='100%'
             direction='column'
             overflowX='scroll'
             position='fixed'
+            overscrollBehavior='none'
         >
             <Heading as='h2' size='sm' py={5} textAlign='center'>Subreddits</Heading>
             <Stack spacing={5} align='start' pb={5}>

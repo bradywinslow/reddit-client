@@ -8,7 +8,6 @@ import {
 import { SiReddit } from "react-icons/si";
 import Link from 'next/link';
 
-
 export default function Header() {
     return (
         <Flex
@@ -16,8 +15,11 @@ export default function Header() {
             align='center'
             borderBottom='solid thin #d7d7d7'
             height='75px'
-            position='sticky'
+            position='fixed'
             top='0'
+            w='100%'
+            zIndex='9999'
+            bgColor='white'
         >
             <Flex
                 direction='row'

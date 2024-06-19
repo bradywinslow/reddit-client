@@ -7,15 +7,27 @@ import {
     CardFooter,
     CardHeader,
     Flex,
+    Heading,
     Image,
     Text } from "@chakra-ui/react"
 
 import { BiChat, BiShare } from "react-icons/bi";
-import { sampleData } from '../reddit/sampleData.js';
+import { subredditNames, sampleData } from '../reddit/sampleData.js';
 
-export default function MainContent() {
+export default function Subreddit(data: any) {
     return (
-        <>
+        <Flex 
+            direction='column'
+            justify='center'
+            align='center'
+            mt='75px'
+            overflowY='auto'
+        >
+            {subredditNames.map((item, index) => {
+                return (
+                    <Heading m={5} key={index}>{item.subheader}</Heading>
+                )
+            })}
             {sampleData.map((item, index) => {
                 return (
                     <Card w={[200, 300, 400, 500]} key={index} mb={7}>
@@ -64,6 +76,6 @@ export default function MainContent() {
                     </Card>
                 )
             })}
-        </>
+        </Flex>
     )
 }

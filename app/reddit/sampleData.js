@@ -1,3 +1,9 @@
+const subredditNames = [
+    {
+        subheader: 'Home'
+    }
+]
+
 const sampleData = [
     {
         username: 'Brady',
@@ -17,4 +23,4 @@ const sampleData = [
     }
 ]
 
-export { sampleData };
+export { subredditNames, sampleData };
