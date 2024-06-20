@@ -31,17 +31,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
-/*
-          <Flex direction='column'>
-            <Header />
-            <Flex direction='row'>
-              <Flex width="20%" p={4}>
-                <SideNav />
-              </Flex>
-              <Flex width='80%' p={4}>
-                {children}
-              </Flex>
-            </Flex>
-          </Flex>
-*/

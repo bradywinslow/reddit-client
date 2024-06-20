@@ -27,7 +27,7 @@ export default function Header() {
                 align='center'
                 width='100%'
                 height='100%'
-                pl={5}
+                pl='45px'
                 gap={2}
             >
                 <Link href='/'>
