@@ -5,7 +5,7 @@ import {
     Heading,
     Icon,
     Input } from '@chakra-ui/react';
-import { SiReddit } from "react-icons/si";
+import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
 
 export default function Header() {

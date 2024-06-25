@@ -1,3 +1,5 @@
+'use client'
+
 import {
     Avatar,
     Box,
@@ -9,12 +11,36 @@ import {
     Flex,
     Heading,
     Image,
-    Text } from "@chakra-ui/react"
-
-import { BiChat, BiShare } from "react-icons/bi";
+    Text } from '@chakra-ui/react'
+import { BiChat, BiShare } from 'react-icons/bi';
 import { subredditNames, sampleData } from '../reddit/sampleData.js';
+import getSubredditData from '../reddit/httpRequests';
+import { useEffect, useState } from 'react';
 
-export default function Subreddit(data: any) {
+interface SubredditProps {
+    page: string;
+}
+
+const Subreddit: React.FC<SubredditProps> = ({ page }) => {
+    const [subredditData, setSubredditData] = useState<any>(null);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try{
+                const data = await getSubredditData( { params: { page } });
+                setSubredditData(data);
+            } catch (error) {
+                console.error('Error fetching subredit data:', error);
+            }
+        }
+
+        fetchData();
+    }, [page]);
+    
+    useEffect(() => {
+        console.log(subredditData);
+    }, [subredditData]);
+
     return (
         <Flex 
             direction='column'
@@ -79,3 +105,5 @@ export default function Subreddit(data: any) {
         </Flex>
     )
 }
+
+export default Subreddit;

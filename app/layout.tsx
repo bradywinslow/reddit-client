@@ -10,8 +10,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <Grid
-            templateAreas={`"header header"
-                            "nav main"`}
+            templateAreas={`'header header'
+                            'nav main'`}
             gridTemplateRows={'1fr 4fr'}
             gridTemplateColumns={'250px 4fr'}
             h='100vh'
