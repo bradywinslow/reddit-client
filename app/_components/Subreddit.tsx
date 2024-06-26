@@ -13,7 +13,6 @@ import {
     Image,
     Text } from '@chakra-ui/react'
 import { BiChat, BiShare } from 'react-icons/bi';
-import { subredditNames, sampleData } from '../reddit/sampleData.js';
 import getSubredditData from '../reddit/httpRequests';
 import { useEffect, useState } from 'react';
 
@@ -37,9 +36,11 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
         fetchData();
     }, [page]);
     
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(subredditData);
-    }, [subredditData]);
+    }, [subredditData]); */
+
+    const posts = subredditData?.data?.children || [];
 
     return (
         <Flex 
@@ -49,21 +50,23 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             mt='75px'
             overflowY='auto'
         >
-            {subredditNames.map((item, index) => {
-                return (
-                    <Heading m={5} key={index}>{item.subheader}</Heading>
-                )
-            })}
-            {sampleData.map((item, index) => {
+            {posts && posts.length > 0 && (
+                <Heading m={5}>{posts[0]?.data.subreddit_name_prefixed}</Heading>
+            )}
+            
+            {posts.map((item: any, index: number) => {
+                const postData = item.data;
+                const imageUrl = postData?.preview?.images?.[0].source?.url;
+
                 return (
                     <Card w={[200, 300, 400, 500]} key={index} mb={7}>
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name={`${item.username}`} src={`${item.avatar}`} />
+                                    <Avatar name={`${postData.author_fullname}`} src={`${postData.avatar}`} />
 
                                     <Box>
-                                        <Text size='xs'>{item.username} | {item.time}</Text>
+                                        <Text size='xs'>{postData.author_fullname} | {postData.created_utc}</Text>
                                     </Box>
 
                                 </Flex>
@@ -71,17 +74,20 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                         </CardHeader>
                         <CardBody>
                             <Text>
-                                {item.text}
+                                {postData.selftext}
                             </Text>
                         </CardBody>
+                        
+                    {imageUrl && (
                         <Flex mx={4}>
                             <Image
                                 objectFit='cover'
-                                src={item.image}
-                                alt={item.altText}
+                                src={imageUrl}
+                                alt={postData.title}
                                 borderRadius='7px'
                             />
                         </Flex>
+                    )}
 
                         <CardFooter
                             justify='space-between'
