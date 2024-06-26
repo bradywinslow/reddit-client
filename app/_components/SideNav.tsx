@@ -26,19 +26,19 @@ export default function SideNav() {
                 <Button variant='ghost' w='100%' size='sm'><Link href='/emulation'>r/emulation</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/gamecollecting'>r/gamecollecting</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/gamemusic'>r/gamemusic</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/gamephysics'>r/gamephysics</Link></Button>
+                <Button variant='ghost' w='100%' size='sm'><Link href='/GamePhysics'>r/GamePhysics</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/gamernews'>r/gamernews</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/games'>r/Games</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/gaming4gamers'>r/gaming4gamers</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/gamingdetails'>r/gamingdetails</Link></Button>
+                <Button variant='ghost' w='100%' size='sm'><Link href='/Games'>r/Games</Link></Button>
+                <Button variant='ghost' w='100%' size='sm'><Link href='/Gaming4Gamers'>r/Gaming4Gamers</Link></Button>
+                <Button variant='ghost' w='100%' size='sm'><Link href='/GamingDetails'>r/GamingDetails</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/IndieGaming'>r/IndieGaming</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/MMORPG'>r/MMORPG</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/patientgamers'>r/patientgamers</Link></Button>
-                <Button variant='ghost' w='100%' size='sm'><Link href='/randomactsofgaming'>r/randomactsofgaming</Link></Button>
+                <Button variant='ghost' w='100%' size='sm'><Link href='/RandomActsOfGaming'>r/RandomActsOfGaming</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/retrogaming'>r/retrogaming</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/speedrun'>r/speedrun</Link></Button>
                 <Button variant='ghost' w='100%' size='sm'><Link href='/truegaming'>r/truegaming</Link></Button>
-                <Button variant='ghost' w='100%' size='sm' mb='75px'><Link href='/webgames'>r/webgames</Link></Button>
+                <Button variant='ghost' w='100%' size='sm' mb='75px'><Link href='/WebGames'>r/WebGames</Link></Button>
             </Stack>
         </Flex>
     )

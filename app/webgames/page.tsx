@@ -1,7 +1,7 @@
 import Subreddit from '../_components/Subreddit';
 
 export default function WebGames() {
-    const page = 'webgames';
+    const page = 'WebGames';
 
     return (
         <Subreddit page={page} />

@@ -35,10 +35,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
 
         fetchData();
     }, [page]);
-    
-    /* useEffect(() => {
-        console.log(subredditData);
-    }, [subredditData]); */
 
     const posts = subredditData?.data?.children || [];
 
@@ -63,10 +59,10 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name={`${postData.author_fullname}`} src={`${postData.avatar}`} />
+                                    <Avatar name={`${postData.author}`} src={`${postData.avatar}`} />
 
                                     <Box>
-                                        <Text size='xs'>{postData.author_fullname} | {postData.created_utc}</Text>
+                                        <Text size='xs'>u/{postData.author} | {postData.created_utc}</Text>
                                     </Box>
 
                                 </Flex>
