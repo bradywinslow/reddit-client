@@ -59,7 +59,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name={`${postData.author}`} src={`${postData.avatar}`} />
+                                    <Avatar name={`${postData.author}`} src={`${postData.thumbnail}`} />
 
                                     <Box>
                                         <Text size='xs'>u/{postData.author} | {postData.created_utc}</Text>
