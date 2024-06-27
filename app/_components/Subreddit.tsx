@@ -15,6 +15,7 @@ import {
 import { BiChat, BiShare } from 'react-icons/bi';
 import getSubredditData from '../_reddit/httpRequests';
 import { useEffect, useState } from 'react';
+import { formatDistance } from 'date-fns';
 
 interface SubredditProps {
     page: string;
@@ -53,16 +54,21 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             {posts.map((item: any, index: number) => {
                 const postData = item.data;
                 const imageUrl = postData?.preview?.images?.[0].source?.url;
+                
+                // Convert date/time post created to time elapsed since post created
+                const timestamp = postData.created_utc;
+                const currentDate = new Date(0);
+                const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
                 return (
                     <Card w={[200, 300, 400, 500]} key={index} mb={7}>
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name={`${postData.author}`} src={`${postData.thumbnail}`} />
+                                    <Avatar name={`${postData.author}`} src={`${imageUrl}`} />
 
                                     <Box>
-                                        <Text size='xs'>u/{postData.author} | {postData.created_utc}</Text>
+                                        <Text size='xs'>u/{postData.author} | {timeElapsed}</Text>
                                     </Box>
 
                                 </Flex>
@@ -74,16 +80,16 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                             </Text>
                         </CardBody>
                         
-                    {imageUrl && (
+                    
                         <Flex mx={4}>
                             <Image
                                 objectFit='cover'
-                                src={imageUrl}
+                                src={postData.thumbnail}
                                 alt={postData.title}
                                 borderRadius='7px'
                             />
                         </Flex>
-                    )}
+                    
 
                         <CardFooter
                             justify='space-between'
