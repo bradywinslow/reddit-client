@@ -13,7 +13,7 @@ import {
     Image,
     Text } from '@chakra-ui/react'
 import { BiChat, BiShare } from 'react-icons/bi';
-import getSubredditData from '../reddit/httpRequests';
+import getSubredditData from '../_reddit/httpRequests';
 import { useEffect, useState } from 'react';
 
 interface SubredditProps {
