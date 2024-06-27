@@ -11,6 +11,7 @@ import {
     Flex,
     Heading,
     Image,
+    Link,
     Text } from '@chakra-ui/react'
 import { BiChat, BiShare } from 'react-icons/bi';
 import getSubredditData from '../_reddit/httpRequests';
@@ -55,7 +56,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                 const postData = item.data;
                 const imageUrl = postData?.preview?.images?.[0].source?.url;
                 
-                // Convert date/time post created to time elapsed since post created
+                // Convert date/time Reddit post created to time elapsed since post created
                 const timestamp = postData.created_utc;
                 const currentDate = new Date(0);
                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
@@ -75,17 +76,20 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                             </Flex>
                         </CardHeader>
                         <CardBody>
+                            <Heading as='h4' size='md'>
+                                {postData.title}
+                            </Heading>
                             <Text>
                                 {postData.selftext}
+                                <Link href={postData.url}>{postData.url}</Link>
                             </Text>
                         </CardBody>
-                        
-                    
+                                            
                         <Flex mx={4}>
                             <Image
                                 objectFit='cover'
                                 src={postData.thumbnail}
-                                alt={postData.title}
+                                alt=''
                                 borderRadius='7px'
                             />
                         </Flex>
