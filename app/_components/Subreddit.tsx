@@ -13,6 +13,7 @@ import {
     Image,
     Link,
     Text } from '@chakra-ui/react'
+// import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { BiChat, BiShare } from 'react-icons/bi';
 import getSubredditData from '../_reddit/httpRequests';
 import { useEffect, useState } from 'react';
@@ -62,7 +63,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
                 return (
-                    <Card w={[200, 300, 400, 500]} key={index} mb={7}>
+                    <Card w={[200, 350, 500, 650]} key={index} mb={7} mx={7}>
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -75,25 +76,27 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                 </Flex>
                             </Flex>
                         </CardHeader>
+
                         <CardBody>
                             <Heading as='h4' size='md'>
                                 {postData.title}
                             </Heading>
-                            <Text>
+                            <Text mt={15}>
                                 {postData.selftext}
                                 <Link href={postData.url}>{postData.url}</Link>
                             </Text>
                         </CardBody>
                                             
-                        <Flex mx={4}>
-                            <Image
-                                objectFit='cover'
-                                src={postData.thumbnail}
-                                alt=''
-                                borderRadius='7px'
-                            />
+                        <Flex mx={4} justify='center'>
+                            <Link href={postData.url} isExternal>
+                                <Image
+                                    src={postData.thumbnail}
+                                    alt=''
+                                    borderRadius='7px'
+                                    w='200px'
+                                />
+                            </Link>
                         </Flex>
-                    
 
                         <CardFooter
                             justify='space-between'
