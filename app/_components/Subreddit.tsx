@@ -12,6 +12,7 @@ import {
     Heading,
     Image,
     Link,
+    Spacer,
     Text } from '@chakra-ui/react'
 // import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { BiChat, BiShare } from 'react-icons/bi';
@@ -55,7 +56,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             
             {posts.map((item: any, index: number) => {
                 const postData = item.data;
-                const imageUrl = postData?.preview?.images?.[0].source?.url;
+                const imageUrl = postData?.preview?.images?.resolutions?.url;
                 
                 // Convert date/time Reddit post created to time elapsed since post created
                 const timestamp = postData.created_utc;
@@ -63,7 +64,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
                 return (
-                    <Card w={[200, 350, 500, 650]} key={index} mb={7} mx={7}>
+                    <Card w={[200, 400, 600, 800]} key={index} mb={7} px='15px'>
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -78,25 +79,29 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                         </CardHeader>
 
                         <CardBody>
-                            <Heading as='h4' size='md'>
-                                {postData.title}
-                            </Heading>
-                            <Text mt={15}>
-                                {postData.selftext}
-                                <Link href={postData.url}>{postData.url}</Link>
-                            </Text>
+                            <Flex direction='row' justify='space-between' gap={2}>
+                                <Flex direction='column' flex={2} w='100%'>
+                                    <Heading as='h4' size='sm'>
+                                        {postData.title}
+                                    </Heading>
+                                    <Text mt={15} width='auto' fontSize='14px'>
+                                        {postData.selftext}
+                                        <Link href={postData.url}>{postData.url}</Link>
+                                    </Text>
+                                </Flex>
+                                <Flex justify='right' flex={1} alignItems='center'>
+                                    <Link href={postData.url} isExternal>
+                                        <Image
+                                            src={postData.thumbnail}
+                                            alt=''
+                                            borderRadius='7px'
+                                            h='125px'
+                                            w='auto'
+                                        />
+                                    </Link>
+                                </Flex>
+                            </Flex>
                         </CardBody>
-                                            
-                        <Flex mx={4} justify='center'>
-                            <Link href={postData.url} isExternal>
-                                <Image
-                                    src={postData.thumbnail}
-                                    alt=''
-                                    borderRadius='7px'
-                                    w='200px'
-                                />
-                            </Link>
-                        </Flex>
 
                         <CardFooter
                             justify='space-between'
