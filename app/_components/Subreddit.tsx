@@ -12,10 +12,8 @@ import {
     Heading,
     Image,
     Link,
-    Spacer,
     Text } from '@chakra-ui/react'
-// import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { BiChat, BiShare } from 'react-icons/bi';
+import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
 import { useEffect, useState } from 'react';
 import { formatDistance } from 'date-fns';
@@ -64,14 +62,14 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
                 return (
-                    <Card w={[200, 400, 600, 800]} key={index} mb={7} px='15px'>
+                    <Card w={[200, 400, 500, 700]} key={index} mb={7} px='15px' gap='2px'>
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                                     <Avatar name={`${postData.author}`} src={`${imageUrl}`} />
 
                                     <Box>
-                                        <Text size='xs'>u/{postData.author} | {timeElapsed}</Text>
+                                        <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
                                     </Box>
 
                                 </Flex>
@@ -86,11 +84,11 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                     </Heading>
                                     <Text mt={15} width='auto' fontSize='14px'>
                                         {postData.selftext}
-                                        <Link href={postData.url}>{postData.url}</Link>
+                                        <a href={postData.url} target='_blank' rel='noopener noreferrer'>{postData.url}</a>
                                     </Text>
                                 </Flex>
                                 <Flex justify='right' flex={1} alignItems='center'>
-                                    <Link href={postData.url} isExternal>
+                                    <a href={postData.url} target='_blank' rel='noopener noreferrer'>
                                         <Image
                                             src={postData.thumbnail}
                                             alt=''
@@ -98,7 +96,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                             h='125px'
                                             w='auto'
                                         />
-                                    </Link>
+                                    </a>
                                 </Flex>
                             </Flex>
                         </CardBody>
@@ -112,11 +110,8 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                             },
                             }}
                         >
-                            <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                                Comments
-                            </Button>
-                            <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
-                                Share
+                            <Button flex='1' variant='ghost' rightIcon={<IoOpenOutline />}>
+                                <a href={`https://www.reddit.com${postData.permalink}`} target='_blank' rel='noopener noreferrer'>Open</a>
                             </Button>
                         </CardFooter>
                     </Card>
