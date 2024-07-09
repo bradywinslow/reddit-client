@@ -11,7 +11,6 @@ import {
     Flex,
     Heading,
     Image,
-    Link,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
