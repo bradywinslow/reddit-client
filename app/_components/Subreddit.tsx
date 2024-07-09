@@ -48,7 +48,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             overflowY='auto'
         >
             {posts && posts.length > 0 && (
-                <Heading m={5}>{posts[0]?.data.subreddit_name_prefixed}</Heading>
+                <Heading size='lg' m={5}>{posts[0]?.data.subreddit_name_prefixed}</Heading>
             )}
             
             {posts.map((item: any, index: number) => {
