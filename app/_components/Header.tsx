@@ -45,6 +45,7 @@ export default function Header() {
                     width={350}
                     height={45}
                     borderRadius={15}
+                    mr='30px'
                 />
             </Flex>
         </Flex>
