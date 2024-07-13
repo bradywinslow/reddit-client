@@ -1,12 +1,5 @@
 'use client'
 
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
 import {
     Avatar,
     Box,
@@ -60,9 +53,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             
             {posts.map((item: any, index: number) => {
                 const postData = item.data;
-                const imageUrl = postData?.preview?.images?.resolutions?.url;
-
-                const markdown = postData.selftext;
                 
                 // Convert date/time Reddit post created to time elapsed since post created
                 const timestamp = postData.created_utc;
@@ -74,7 +64,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                         <CardHeader>
                             <Flex>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name={`${postData.author}`} src={`${imageUrl}`} />
+                                    <Avatar name={`${postData.author}`} />
 
                                     <Box>
                                         <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
@@ -91,33 +81,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                         {postData.title}
                                     </Heading>
                                     <Text mt={15} width='auto' fontSize='14px'>
-
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            rehypePlugins={[rehypeRaw]}
-                                            linkTarget='_blank'
-                                            components={{
-                                                code({ node, inline, className, children, ...props }: any) {
-                                                    const match = /language-(\w+)/.exec(className || '');
-
-                                                    return !inline && match ? (
-                                                        <SyntaxHighlighter
-                                                            style={dracula}
-                                                            language={match[1]}
-                                                            PreTag="div"
-                                                            {...props}
-                                                        >{String(children).replace(/\n$/, '')}</SyntaxHighlighter>
-                                                    ) : (
-                                                        <code className={className} {...props}>
-                                                            {children}
-                                                        </code>
-                                                    );
-                                                },
-                                            }}
-                                        >
-                                            {markdown}
-                                        </ReactMarkdown>
-
+                                        {postData.selftext}
                                         <a href={postData.url} target='_blank' rel='noopener noreferrer'>{postData.url}</a>
                                     </Text>
                                 </Flex>
