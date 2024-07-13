@@ -4,11 +4,16 @@ import {
     Flex,
     Heading,
     Icon,
-    Input } from '@chakra-ui/react';
+    Input, 
+    InputGroup,
+    InputLeftElement,
+    Stack} from '@chakra-ui/react';
 import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
+import { GoSearch } from "react-icons/go";
 
 export default function Header() {
+
     return (
         <Flex
             justify='center'
@@ -27,7 +32,7 @@ export default function Header() {
                 align='center'
                 width='100%'
                 height='100%'
-                pl='45px'
+                ml={['5px', '20px', '35px', '50px']}
                 gap={2}
             >
                 <Link href='/'>
@@ -37,17 +42,27 @@ export default function Header() {
                     </Flex>
                 </Link>
             </Flex>
-            <Flex pr={5}>
-                <Input
-                    variant='outline'
-                    placeholder='Search'
-                    size='lg'
-                    width={350}
-                    height={45}
-                    borderRadius={15}
-                    mr='30px'
-                />
-            </Flex>
+                <search>
+                    <Stack>
+                        <Flex>
+                            <InputGroup>
+                                <InputLeftElement pointerEvents='none'>
+                                        <Icon as={GoSearch}/>
+                                </InputLeftElement>
+                                <Input
+                                    type='text'
+                                    autoComplete='off'
+                                    variant='outline'
+                                    placeholder='Search'
+                                    size='md'
+                                    w={[200, 250, 300, 350]}
+                                    borderRadius={15}
+                                    mr={['5px', '20px', '35px', '50px']}
+                                ></Input>
+                            </InputGroup>
+                        </Flex>
+                    </Stack>
+                </search>
         </Flex>
     )
 }
