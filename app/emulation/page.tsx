@@ -1,9 +1,15 @@
+import { Flex } from '@chakra-ui/react';
+import SubHeader from '../_components/SubHeader';
 import Subreddit from '../_components/Subreddit';
 
 export default function Emulation() {
     const page = 'emulation';
+    const subredditName = `r/${page}`;
     
     return (
-        <Subreddit page={page} />
+        <Flex direction='column'>
+            <SubHeader subredditName={subredditName} />
+            <Subreddit page={page} />
+        </Flex>
     )
 }

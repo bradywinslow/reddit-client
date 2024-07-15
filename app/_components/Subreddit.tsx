@@ -44,12 +44,12 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             direction='column'
             justify='center'
             align='center'
-            mt='75px'
+            mt='15px'
             overflowY='auto'
         >
-            {posts && posts.length > 0 && (
+            { /*posts && posts.length > 0 && (
                 <Heading size='lg' m={5}>{posts[0]?.data.subreddit_name_prefixed}</Heading>
-            )}
+            ) */}
             
             {posts.map((item: any, index: number) => {
                 const postData = item.data;
@@ -82,11 +82,21 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                     </Heading>
                                     <Text mt={15} width='auto' fontSize='14px'>
                                         {postData.selftext}
-                                        <a href={postData.url} target='_blank' rel='noopener noreferrer'>{postData.url}</a>
+                                        <a
+                                            href={postData.url}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                        >
+                                            {postData.url}
+                                        </a>
                                     </Text>
                                 </Flex>
                                 <Flex justify='right' flex={1} alignItems='center'>
-                                    <a href={postData.url} target='_blank' rel='noopener noreferrer'>
+                                    <a
+                                        href={postData.url}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
                                         <Image
                                             src={postData.thumbnail}
                                             alt=''
@@ -108,8 +118,18 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                             },
                             }}
                         >
-                            <Button flex='1' variant='ghost' rightIcon={<IoOpenOutline />}>
-                                <a href={`https://www.reddit.com${postData.permalink}`} target='_blank' rel='noopener noreferrer'>Open</a>
+                            <Button
+                                flex='1'
+                                variant='ghost'
+                                rightIcon={<IoOpenOutline />}
+                            >
+                                <a
+                                    href={`https://www.reddit.com${postData.permalink}`}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    Open
+                                </a>
                             </Button>
                         </CardFooter>
                     </Card>

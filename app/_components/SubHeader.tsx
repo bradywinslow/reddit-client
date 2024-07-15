@@ -1,10 +1,15 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 
-export default function SubHeader({ text }: {text: React.ReactNode }) {
+export default function SubHeader({ subredditName }: {subredditName: React.ReactNode }) {
     return (
-        <Flex>
-            <Heading m={5}>{text}</Heading>
+        <Flex
+            justify='center'
+            align='center'
+            mt='90px'
+            overflowY='auto'
+        >
+            <Heading size='lg' m={5}>{subredditName}</Heading>
         </Flex>
     )
 }
