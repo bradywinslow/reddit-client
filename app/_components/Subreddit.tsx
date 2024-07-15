@@ -47,9 +47,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
             mt='15px'
             overflowY='auto'
         >
-            { /*posts && posts.length > 0 && (
-                <Heading size='lg' m={5}>{posts[0]?.data.subreddit_name_prefixed}</Heading>
-            ) */}
             
             {posts.map((item: any, index: number) => {
                 const postData = item.data;
