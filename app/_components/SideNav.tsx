@@ -1,3 +1,5 @@
+'use client';
+
 import { 
     Button,
     Flex,
@@ -5,8 +7,12 @@ import {
 
 import Link from 'next/link';
 import { sideNavData } from '../_reddit/sideNavData.js';
+import { usePathname } from 'next/navigation';
+import path from 'path';
 
 export default function SideNav() {
+    const currentPath = usePathname();
+
     return (
         <Flex
             px={25}
@@ -20,12 +26,34 @@ export default function SideNav() {
             position='fixed'
             overscrollBehavior='none'
         >
-            <Heading as='h2' size='sm' py={5} textAlign='center'>Subreddits</Heading>
-            <Flex justify='center' align='center' pb={5}>
-                <Flex w='100%' direction='column' gap={5} pb={70}>
+            <Heading
+                as='h2'
+                size='sm'
+                py={5}
+                textAlign='center'
+            >
+                Subreddits
+            </Heading>
+            <Flex
+                justify='center'
+                align='center'
+                pb={5}
+            >
+                <Flex
+                    w='100%'
+                    direction='column'
+                    gap={5}
+                    pb={70}
+                >
                     {sideNavData.map((item, index) => {
                         return (
-                            <Button key={index} variant='ghost' w='100%' size='sm'>
+                            <Button
+                                key={index}
+                                variant='ghost'
+                                w='100%'
+                                size='sm'
+                                bg={currentPath === item.path ? 'gray.200' : ''}
+                            >
                                 <Link href={item.path} passHref>{item.name}</Link>
                             </Button>
                         )
