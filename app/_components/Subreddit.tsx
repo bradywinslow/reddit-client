@@ -13,7 +13,6 @@ import {
     Flex,
     Heading,
     Image,
-    StylesProvider,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
@@ -21,8 +20,9 @@ import { useEffect, useState } from 'react';
 import { formatDistance } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype'
-import rehypeReact from 'rehype-react'
+import remarkRehype from 'remark-rehype';
+import rehypeReact from 'rehype-react';
+import rehypeRaw from 'rehype-raw';
 
 interface SubredditProps {
     page: string;
@@ -84,7 +84,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                     <Heading as='h4' size='sm'>
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm, remarkRehype]}
-                                            rehypePlugins={[rehypeReact]}
+                                            rehypePlugins={[rehypeReact, rehypeRaw]}
                                         >
                                             {postData.title}
                                         </ReactMarkdown>
@@ -92,7 +92,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                                     <Text mt={15} width='auto' fontSize='14px'>
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm, remarkRehype]}
-                                            rehypePlugins={[rehypeReact]}
+                                            rehypePlugins={[rehypeReact, rehypeRaw]}
                                         >
                                             {postData.selftext}
                                         </ReactMarkdown>
