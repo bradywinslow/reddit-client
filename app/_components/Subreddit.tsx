@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react';
+
 import {
     Avatar,
     Box,
@@ -11,11 +13,16 @@ import {
     Flex,
     Heading,
     Image,
+    StylesProvider,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
 import { useEffect, useState } from 'react';
 import { formatDistance } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype'
+import rehypeReact from 'rehype-react'
 
 interface SubredditProps {
     page: string;
@@ -75,10 +82,20 @@ const Subreddit: React.FC<SubredditProps> = ({ page }) => {
                             <Flex direction='row' justify='space-between' gap={2}>
                                 <Flex direction='column' flex={2} w='100%'>
                                     <Heading as='h4' size='sm'>
-                                        {postData.title}
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkRehype]}
+                                            rehypePlugins={[rehypeReact]}
+                                        >
+                                            {postData.title}
+                                        </ReactMarkdown>
                                     </Heading>
                                     <Text mt={15} width='auto' fontSize='14px'>
-                                        {postData.selftext}
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkRehype]}
+                                            rehypePlugins={[rehypeReact]}
+                                        >
+                                            {postData.selftext}
+                                        </ReactMarkdown>
                                         <a
                                             href={postData.url}
                                             target='_blank'

@@ -8,7 +8,6 @@ import {
 import Link from 'next/link';
 import { sideNavData } from '../_reddit/sideNavData.js';
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
 export default function SideNav() {
     const currentPath = usePathname();
