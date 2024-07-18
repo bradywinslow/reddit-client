@@ -51,7 +51,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
 
     return (
         <Box>
-            <Flex direction='column' align='end' pr='50px'>
+            <Flex direction='column' align='end' pr='25px'>
                 <SearchBar />
             </Flex>
 
