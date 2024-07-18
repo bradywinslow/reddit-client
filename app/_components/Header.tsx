@@ -42,27 +42,6 @@ export default function Header() {
                     </Flex>
                 </Link>
             </Flex>
-                <search>
-                    <Stack>
-                        <Flex>
-                            <InputGroup>
-                                <InputLeftElement pointerEvents='none'>
-                                        <Icon as={GoSearch}/>
-                                </InputLeftElement>
-                                <Input
-                                    type='text'
-                                    autoComplete='off'
-                                    variant='outline'
-                                    placeholder='Search'
-                                    size='md'
-                                    w={[200, 250, 300, 350]}
-                                    borderRadius={15}
-                                    mr={['5px', '20px', '35px', '50px']}
-                                ></Input>
-                            </InputGroup>
-                        </Flex>
-                    </Stack>
-                </search>
         </Flex>
     )
 }

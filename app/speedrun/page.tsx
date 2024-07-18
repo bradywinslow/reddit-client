@@ -1,5 +1,4 @@
 import { Flex } from '@chakra-ui/react';
-import SubHeader from '../_components/SubHeader';
 import Subreddit from '../_components/Subreddit';
 
 export default function Speedrun() {
@@ -8,8 +7,7 @@ export default function Speedrun() {
 
     return (
         <Flex direction='column'>
-            <SubHeader subredditName={subredditName} />
-            <Subreddit page={page} />
+            <Subreddit page={page} subredditName={subredditName} />
         </Flex>
     )
 }
