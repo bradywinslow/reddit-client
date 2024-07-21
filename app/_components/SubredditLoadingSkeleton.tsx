@@ -9,7 +9,6 @@ import {
     SkeletonCircle,
     SkeletonText } from '@chakra-ui/react';
 import React from 'react'
-import SearchBar from './SearchBar';
 
 export default function LoadingSkeleton() {
     return (

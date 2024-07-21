@@ -26,7 +26,7 @@ import rehypeReact from 'rehype-react';
 import rehypeRaw from 'rehype-raw';
 import SubHeader from '../_components/SubHeader';
 import SearchBar from './SearchBar';
-import LoadingSkeleton from './LoadingSkeleton';
+import SubredditLoadingSkeleton from './SubredditLoadingSkeleton';
 
 interface SubredditProps {
     page: string;
@@ -67,14 +67,14 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                         </Box>
                     </Flex>
                     <Box gap='2px'>
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
+                        <SubredditLoadingSkeleton />
+                        <SubredditLoadingSkeleton />
+                        <SubredditLoadingSkeleton />
                     </Box>
                 </Box>
                 
             ) : (
-                <>
+                <Box>
                     <Flex direction='column' align='end' pr='25px'>
                         <SearchBar />
                     </Flex>
@@ -177,7 +177,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                             )
                         })}
                     </Flex>
-                </>
+                </Box>
             )}
         </Box>
     )
