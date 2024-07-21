@@ -15,15 +15,7 @@ export default function LoadingSkeleton() {
     return (
 
     <Box>
-        <Flex direction='column' align='end' pr='25px'>
-            <SearchBar />
-        </Flex>
-
         <Flex direction='column' align='center'>
-            <Box w={[175, 200, 225, 250]} m={5}>
-                <Skeleton h='40px' borderRadius={15} />
-            </Box>
-
             <Card w={[200, 400, 500, 700]} mb={7} px='15px' gap='2px'>
                 <CardHeader>
                     <Flex>

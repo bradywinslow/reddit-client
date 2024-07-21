@@ -13,6 +13,7 @@ import {
     Flex,
     Heading,
     Image,
+    Skeleton,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
@@ -55,9 +56,22 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
     return (
         <Box>
             {isLoading ? (
-                <>
-                    <LoadingSkeleton />
-                </>
+                <Box>
+                    <Flex direction='column' align='end' pr='25px'>
+                        <SearchBar />
+                    </Flex>
+
+                    <Flex direction='column' align='center'>
+                        <Box w={[175, 200, 225, 250]} m={5}>
+                            <Skeleton h='40px' borderRadius={15} />
+                        </Box>
+                    </Flex>
+                    <Box gap='2px'>
+                        <LoadingSkeleton />
+                        <LoadingSkeleton />
+                        <LoadingSkeleton />
+                    </Box>
+                </Box>
                 
             ) : (
                 <>
