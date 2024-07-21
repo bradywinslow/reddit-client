@@ -3,14 +3,9 @@
 import {
     Flex,
     Heading,
-    Icon,
-    Input, 
-    InputGroup,
-    InputLeftElement,
-    Stack} from '@chakra-ui/react';
+    Icon } from '@chakra-ui/react';
 import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
-import { GoSearch } from "react-icons/go";
 
 export default function Header() {
 

@@ -9,15 +9,14 @@ import {
     SkeletonCircle,
     SkeletonText } from '@chakra-ui/react';
 import React from 'react'
+import SearchBar from './SearchBar';
 
 export default function LoadingSkeleton() {
     return (
 
     <Box>
         <Flex direction='column' align='end' pr='25px'>
-            <Box w={[200, 250, 300, 350]}>
-                <Skeleton h='40px' borderRadius={15} />
-            </Box>
+            <SearchBar />
         </Flex>
 
         <Flex direction='column' align='center'>
