@@ -110,7 +110,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
                                 return (
-                                    <Card w={[200, 400, 500, 700]} key={index} mb={7} px='15px' gap='2px'>
+                                    <Card w={[200, 400, 500, 700]} key={index} mb={7} px={['2px', '9px', '16px']} gap='2px'>
                                         <CardHeader>
                                             <Flex>
                                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -125,48 +125,81 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                         </CardHeader>
 
                                         <CardBody>
-                                            <Flex direction='row' justify='space-between' gap={2}>
-                                                <Flex direction='column' flex={2} w='100%'>
-                                                    <Heading as='h4' size='sm'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                        >
-                                                            {postData.title}
-                                                        </ReactMarkdown>
-                                                    </Heading>
-                                                    <Text mt={15} width='auto' fontSize='14px'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                        >
-                                                            {postData.selftext}
-                                                        </ReactMarkdown>
-                                                        <a
-                                                            href={postData.url}
-                                                            target='_blank'
-                                                            rel='noopener noreferrer'
-                                                        >
-                                                            {postData.url}
-                                                        </a>
-                                                    </Text>
+                                            {postData.secure_media?.reddit_video?.fallback_url || postData.thumbnail ? (
+                                                <Flex direction='column' gap={5}>
+                                                    <Flex direction='column' w='100%'>
+                                                        <Heading as='h4' size='sm'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {postData.title}
+                                                            </ReactMarkdown>
+                                                        </Heading>
+                                                        <Text mt={15} width='auto' fontSize='14px'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {postData.selftext}
+                                                            </ReactMarkdown>
+                                                        </Text>
+                                                    </Flex>
+                                                    {postData.secure_media?.reddit_video?.fallback_url ? (
+                                                        <Flex justify='center' alignItems='center'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <iframe
+                                                                    src={postData.secure_media?.reddit_video?.fallback_url}
+                                                                    width='300px'
+                                                                    height='187px'
+                                                                    allowFullScreen
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    ) : (
+                                                        <Flex justify='center' alignItems='center'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Image
+                                                                    src={postData.thumbnail}
+                                                                    alt=''
+                                                                    borderRadius='7px'
+                                                                    h='150px'
+                                                                    w='auto'
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    )}
                                                 </Flex>
-                                                <Flex justify='right' flex={1} alignItems='center'>
-                                                    <a
-                                                        href={postData.url}
-                                                        target='_blank'
-                                                        rel='noopener noreferrer'
-                                                    >
-                                                        <Image
-                                                            src={postData.thumbnail}
-                                                            alt=''
-                                                            borderRadius='7px'
-                                                            h='125px'
-                                                            w='auto'
-                                                        />
-                                                    </a>
+                                            ) : (
+                                                <Flex direction='column'>
+                                                    <Flex direction='column' w='100%'>
+                                                        <Heading as='h4' size='sm'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {postData.title}
+                                                            </ReactMarkdown>
+                                                        </Heading>
+                                                        <Text mt={15} width='auto' fontSize='14px'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {postData.selftext}
+                                                            </ReactMarkdown>
+                                                        </Text>
+                                                    </Flex>
                                                 </Flex>
-                                            </Flex>
+                                            )}
                                         </CardBody>
 
                                         <CardFooter
