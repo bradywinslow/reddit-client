@@ -109,6 +109,12 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 const currentDate = new Date(0);
                                 const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
+                                // If media content in post is YouTube video, extract url
+                                const youTubeIframeString: string = postData.media_embed?.content;
+                                // Regular expression to extract YouTube url
+                                const regex = /scr=\/"(.*?)" enablejsapi=1\\/;
+                                const youTubeUrl = youTubeIframeString.match(regex);
+
                                 return (
                                     <Card w={[200, 400, 500, 700]} key={index} mb={7} px={['2px', '9px', '16px']} gap='2px'>
                                         <CardHeader>
@@ -125,7 +131,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                         </CardHeader>
 
                                         <CardBody>
-                                            {postData.secure_media?.reddit_video?.fallback_url || postData.thumbnail ? (
                                                 <Flex direction='column' gap={5}>
                                                     <Flex direction='column' w='100%'>
                                                         <Heading as='h4' size='sm'>
@@ -145,22 +150,33 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                             </ReactMarkdown>
                                                         </Text>
                                                     </Flex>
-                                                    {postData.secure_media?.reddit_video?.fallback_url ? (
+                                                    {postData.secure_media?.reddit_video?.fallback_url || postData.secure_media?.oembed?.html  && (
                                                         <Flex justify='center' alignItems='center'>
                                                             <a
                                                                 href={postData.url}
                                                                 target='_blank'
                                                                 rel='noopener noreferrer'
                                                             >
-                                                                <iframe
-                                                                    src={postData.secure_media?.reddit_video?.fallback_url}
-                                                                    width='300px'
-                                                                    height='187px'
-                                                                    allowFullScreen
-                                                                />
+                                                                {postData.secure_media?.reddit_video?.fallback_url ? (
+                                                                    <iframe
+                                                                        src={postData.secure_media?.reddit_video?.fallback_url}
+                                                                        width='300px'
+                                                                        height='187px'
+                                                                        allowFullScreen
+                                                                    />
+                                                                ) : (
+                                                                    <iframe
+                                                                        src={youTubeUrl}
+                                                                        width='300px'
+                                                                        height='187px'
+                                                                        allowFullScreen
+                                                                    />  
+                                                                )}
+                                                                
                                                             </a>
                                                         </Flex>
-                                                    ) : (
+                                                    )}
+                                                    {!postData.secure_media?.reddit_video?.fallback_url && postData.thumbnail && (
                                                         <Flex justify='center' alignItems='center'>
                                                             <a
                                                                 href={postData.url}
@@ -177,29 +193,8 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                             </a>
                                                         </Flex>
                                                     )}
+                                                    {postData.thumbnail === 'self' && (null)}
                                                 </Flex>
-                                            ) : (
-                                                <Flex direction='column'>
-                                                    <Flex direction='column' w='100%'>
-                                                        <Heading as='h4' size='sm'>
-                                                            <ReactMarkdown
-                                                                remarkPlugins={[remarkGfm, remarkRehype]}
-                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                            >
-                                                                {postData.title}
-                                                            </ReactMarkdown>
-                                                        </Heading>
-                                                        <Text mt={15} width='auto' fontSize='14px'>
-                                                            <ReactMarkdown
-                                                                remarkPlugins={[remarkGfm, remarkRehype]}
-                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                            >
-                                                                {postData.selftext}
-                                                            </ReactMarkdown>
-                                                        </Text>
-                                                    </Flex>
-                                                </Flex>
-                                            )}
                                         </CardBody>
 
                                         <CardFooter
