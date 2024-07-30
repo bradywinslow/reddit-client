@@ -71,6 +71,11 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
         }
     }, [query, subredditData]);
 
+    function removeZeroWidthSpaces(postText: string) {
+        // Replace any zero-width spaces returned from the Markdown as blank strings.
+        return postText.replace(/&amp;#x200B;/g, '');
+    };
+
     return (
         <Box>
             {isLoading ? (
@@ -103,6 +108,8 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                         {filteredData.length > 0 ? (
                             filteredData.map((item: any, index: number) => {
                                 const postData = item.data;
+                                const postText = postData.selftext;
+                                const cleanedPostText = removeZeroWidthSpaces(postText);
                                 
                                 // Convert date/time Reddit post created to time elapsed since post created
                                 const timestamp = postData.created_utc;
@@ -140,7 +147,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                             remarkPlugins={[remarkGfm, remarkRehype]}
                                                             rehypePlugins={[rehypeReact, rehypeRaw]}
                                                         >
-                                                            {postData.selftext}
+                                                            {cleanedPostText}
                                                         </ReactMarkdown>
                                                     </Box>
                                                 </Flex>
