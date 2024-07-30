@@ -119,14 +119,14 @@ export default function HomePage() {
                                                             {postData.title}
                                                         </ReactMarkdown>
                                                     </Heading>
-                                                    <Text mt={15} width='auto' fontSize='14px'>
+                                                    <Box mt={15} width='auto' fontSize='14px'>
                                                         <ReactMarkdown
                                                             remarkPlugins={[remarkGfm, remarkRehype]}
                                                             rehypePlugins={[rehypeReact, rehypeRaw]}
                                                         >
                                                             {postData.selftext}
                                                         </ReactMarkdown>
-                                                    </Text>
+                                                    </Box>
                                                 </Flex>
                                                 {postData.secure_media?.reddit_video?.fallback_url && (
                                                     <Flex justify='center' alignItems='center'>
