@@ -1,7 +1,7 @@
-import Subreddit from './_components/Subreddit';
+import HomePage from './_components/HomePage';
 
 export default function Home() {
   return (
-    <Subreddit />
+    <HomePage />
   )
 }

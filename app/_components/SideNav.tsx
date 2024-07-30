@@ -6,7 +6,7 @@ import {
     Heading } from '@chakra-ui/react';
 
 import Link from 'next/link';
-import { sideNavData } from '../_reddit/sideNavData.js';
+import { subredditData } from '../_reddit/subredditData.js';
 import { usePathname } from 'next/navigation';
 
 export default function SideNav() {
@@ -44,7 +44,7 @@ export default function SideNav() {
                     gap={5}
                     pb={70}
                 >
-                    {sideNavData.map((item, index) => {
+                    {subredditData.map((item, index) => {
                         return (
                             <Button
                                 key={index}

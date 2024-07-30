@@ -23,38 +23,32 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeRaw from 'rehype-raw';
-import SubHeader from '../_components/SubHeader';
-import SearchBar from './SearchBar';
 import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
+// import { subredditData } from '../_reddit/subredditData';
+import { sampleData } from '../_reddit/subredditData';
 
-interface SubredditProps {
-    page: string;
-    subredditName: string;
-}
-
-const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
-    const [subredditData, setSubredditData] = useState<any>(null);
+export default function HomePage() {
+    const [homePageData, setHomePageData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const searchParams = useSearchParams();
-    const query = searchParams.get('query')?.toString() || '';
-    const [filteredData, setFilteredData] = useState([]);
+    // const searchParams = useSearchParams();
+    // const query = searchParams.get('query')?.toString() || '';
+    // const [filteredData, setFilteredData] = useState([]);
     
     useEffect(() => {
         const fetchData = async () => {
-            try{
-                const data = await getSubredditData({ params: { page } });
-                setSubredditData(data);
-            } catch (error) {
-                console.error('Error fetching subredit data:', error);
-            }
+            let homePagePromises = sampleData.map(item => {            
+                return getSubredditData({ params: { page: item.page } });
+            })
+            const data = await Promise.all(homePagePromises);
+            console.log(data);
+            setHomePageData(data);
             setIsLoading(false);
         }
-
         fetchData();
-    }, [page]);
+    });
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (subredditData) {
             const posts = subredditData?.data?.children || [];
             if (query) {
@@ -69,16 +63,12 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 setFilteredData(posts);
             }
         }
-    }, [query, subredditData]);
+    }, [query, subredditData]); */
 
     return (
         <Box>
             {isLoading ? (
                 <Box minH='100vh'>
-                    <Flex direction='column' align='end' pr='25px'>
-                        <SearchBar />
-                    </Flex>
-
                     <Flex direction='column' align='center'>
                         <Box w={[175, 200, 225, 250]} m={5}>
                             <Skeleton h='40px' />
@@ -93,15 +83,9 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 
             ) : (
                 <Box minH='100vh'>
-                    <Flex direction='column' align='end' pr='25px'>
-                        <SearchBar />
-                    </Flex>
-
                     <Flex direction='column' align='center'>
-                        <SubHeader subredditName={subredditName} />
-
-                        {filteredData.length > 0 ? (
-                            filteredData.map((item: any, index: number) => {
+                        {homePageData.length > 0 ? (
+                            homePageData.map((item: any, index: number) => {
                                 const postData = item.data;
                                 
                                 // Convert date/time Reddit post created to time elapsed since post created
@@ -135,14 +119,14 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                             {postData.title}
                                                         </ReactMarkdown>
                                                     </Heading>
-                                                    <Box mt={15} width='auto' fontSize='14px'>
+                                                    <Text mt={15} width='auto' fontSize='14px'>
                                                         <ReactMarkdown
                                                             remarkPlugins={[remarkGfm, remarkRehype]}
                                                             rehypePlugins={[rehypeReact, rehypeRaw]}
                                                         >
                                                             {postData.selftext}
                                                         </ReactMarkdown>
-                                                    </Box>
+                                                    </Text>
                                                 </Flex>
                                                 {postData.secure_media?.reddit_video?.fallback_url && (
                                                     <Flex justify='center' alignItems='center'>
@@ -160,7 +144,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         </a>
                                                     </Flex>
                                                 )}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.thumbnail !== 'self' && postData.thumbnail !== 'default' && postData.thumbnail !== '' && (
+                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.thumbnail !== 'self' && postData.thumbnail !== 'default' && (
                                                     <Flex justify='center' alignItems='center'>
                                                         <a
                                                             href={postData.url}
@@ -215,5 +199,3 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
         </Box>
     )
 }
-
-export default Subreddit;
