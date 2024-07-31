@@ -104,6 +104,7 @@ export default function HomePage() {
                                                     <Avatar name={`${postData.author}`} />
 
                                                     <Box>
+                                                        <Text fontSize='14px' as='b'>{postData.subreddit_name_prefixed}</Text>
                                                         <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
                                                     </Box>
 
