@@ -27,6 +27,7 @@ import SubHeader from '../_components/SubHeader';
 import SearchBar from './SearchBar';
 import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
+import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
 
 interface SubredditProps {
     page: string;
@@ -71,11 +72,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
         }
     }, [query, subredditData]);
 
-    function removeZeroWidthSpaces(postText: string) {
-        // Replace any zero-width spaces returned from the Markdown as blank strings.
-        return postText.replace(/&amp;#x200B;/g, '');
-    };
-
     return (
         <Box>
             {isLoading ? (
@@ -108,8 +104,14 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                         {filteredData.length > 0 ? (
                             filteredData.map((item: any, index: number) => {
                                 const postData = item.data;
+                                
+                                // Remove zero-width spaces in returned Markdown
                                 const postText = postData.selftext;
                                 const cleanedPostText = removeZeroWidthSpaces(postText);
+
+                                // Check if thumbnail ends in .jpg to prevent a blank spot appearing on a card
+                                const postThumbnail = postData.thumbnail;
+                                const postThumbnailPhoto = postThumbnail.endsWith('.jpg');
                                 
                                 // Convert date/time Reddit post created to time elapsed since post created
                                 const timestamp = postData.created_utc;
@@ -167,7 +169,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         </a>
                                                     </Flex>
                                                 )}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.thumbnail !== 'self' && postData.thumbnail !== 'default' && postData.thumbnail !== '' && (
+                                                {!postData.secure_media?.reddit_video?.fallback_url && postThumbnail !== 'self' && postThumbnail !== 'default' && postThumbnail !== '' && postThumbnailPhoto && (
                                                     <Flex justify='center' alignItems='center'>
                                                         <a
                                                             href={postData.url}
@@ -175,7 +177,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                             rel='noopener noreferrer'
                                                         >
                                                             <Image
-                                                                src={postData.thumbnail}
+                                                                src={postThumbnail}
                                                                 alt=''
                                                                 borderRadius='7px'
                                                                 h='150px'

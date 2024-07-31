@@ -24,9 +24,10 @@ import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeRaw from 'rehype-raw';
 import LoadingSkeleton from './LoadingSkeleton';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 // import { subredditData } from '../_reddit/subredditData';
 import { sampleData } from '../_reddit/subredditData';
+import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
 
 export default function HomePage() {
     const [homePageData, setHomePageData] = useState<any>(null);
@@ -87,6 +88,8 @@ export default function HomePage() {
                         {homePageData.length > 0 ? (
                             homePageData.map((item: any, index: number) => {
                                 const postData = item.data;
+                                const postText = postData.selftext;
+                                const cleanedPostText = removeZeroWidthSpaces(postText);
                                 
                                 // Convert date/time Reddit post created to time elapsed since post created
                                 const timestamp = postData.created_utc;
@@ -124,7 +127,7 @@ export default function HomePage() {
                                                             remarkPlugins={[remarkGfm, remarkRehype]}
                                                             rehypePlugins={[rehypeReact, rehypeRaw]}
                                                         >
-                                                            {postData.selftext}
+                                                            {cleanedPostText}
                                                         </ReactMarkdown>
                                                     </Box>
                                                 </Flex>
