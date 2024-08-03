@@ -47,7 +47,7 @@ export default function HomePage() {
             setIsLoading(false);
         }
         fetchData();
-    });
+    }, []);
 
     /* useEffect(() => {
         if (subredditData) {

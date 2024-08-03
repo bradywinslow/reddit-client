@@ -18,7 +18,7 @@ import {
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
 import { formatDistance } from 'date-fns';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
@@ -28,6 +28,31 @@ import SearchBar from './SearchBar';
 import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
+
+
+interface ListProps {
+    children: React.ReactNode;
+    ordered: boolean;
+}
+
+interface ListItemProps {
+    children: React.ReactNode;
+}
+
+interface ParagraphProps {
+    children: React.ReactNode;
+}
+
+const renderers: Components = {
+    ul: ({ children }) => <ul style={{ marginLeft: '1.5rem' }}>{children}</ul>,
+    ol: ({ children }) => <ol>{children}</ol>,
+    li: ({ children }) => <li style={{ marginLeft: '0.5rem' }}>{children}</li>,
+    p: ({ children }) => <Text mt={4} mb={4}>{children}</Text>,
+    thead: ({ children }) => <thead style={{ marginLeft: '1rem' }}>{children}</thead>,
+    tbody: ({ children }) => <tbody style={{ marginLeft: '1rem' }}>{children}</tbody>,
+    th: ({ children }) => <th style={{ border: '1px solid #ccc', padding: '8px 10px' }}>{children}</th>,
+    td: ({ children }) => <td style={{ border: '1px solid #ccc', padding: '8px 10px', textAlign: 'center' }}>{children}</td>
+};
 
 interface SubredditProps {
     page: string;
@@ -43,11 +68,11 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
     
     useEffect(() => {
         const fetchData = async () => {
-            try{
+            try {
                 const data = await getSubredditData({ params: { page } });
                 setSubredditData(data);
             } catch (error) {
-                console.error('Error fetching subredit data:', error);
+                console.error('Error fetching subreddit data:', error);
             }
             setIsLoading(false);
         }
@@ -148,6 +173,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         <ReactMarkdown
                                                             remarkPlugins={[remarkGfm, remarkRehype]}
                                                             rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            components={renderers}
                                                         >
                                                             {cleanedPostText}
                                                         </ReactMarkdown>
