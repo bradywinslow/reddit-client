@@ -128,6 +128,10 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 const postThumbnail = postData.thumbnail;
                                 const postThumbnailPhoto = postThumbnail.endsWith('.jpg');
 
+                                // Check if url begins with https://twitter.com to prevent a blank spot appearing on a card
+                                const postUrl = postData.url;
+                                const postUrlIsTweet = postUrl.includes('twitter.com');
+
                                 // Extract YouTube URL if YouTube video is included in subreddit post
                                 const stringToExtractUrlFrom = postData.media_embed?.content;
                                 const youTubeUrl = extractYouTubeUrl(stringToExtractUrlFrom);
@@ -200,7 +204,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )} */}
 
                                                 {/* Embed non-YouTube video in subreddit post card if there is one */}
-                                                {postData.secure_media?.reddit_video?.fallback_url && (
+                                                {!postUrlIsTweet && postData.secure_media?.reddit_video?.fallback_url && (
                                                     <Flex justify='center' alignItems='center' mt='30px'>
                                                         <Box borderRadius='7px' overflow='hidden'>
                                                             <iframe
@@ -214,7 +218,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Embed YouTube video in subreddit post card if there is one */}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postThumbnail === '' && postData.media_embed?.content && (
+                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postThumbnail === '' && postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center' mt='30px'>
                                                         <Box borderRadius='7px' overflow='hidden'>
                                                             <iframe
@@ -230,7 +234,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show thumbnail image if original subreddit post includes one */}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postThumbnailPhoto && (
+                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -251,7 +255,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show url_overridden_by_dest image if original subreddit post includes one */}
-                                                {!postThumbnailPhoto && (postData.url_overridden_by_dest?.endsWith('jpeg') && postData.url?.endsWith('jpeg')) || (postData.url_overridden_by_dest?.endsWith('png') && postData.url?.endsWith('png')) && (
+                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -263,10 +267,23 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                                 alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
                                                                 borderRadius='7px'
                                                                 bg='black'
-                                                                textColor='white'
+                                                                textColor='grey'
                                                                 h='150px'
                                                                 w='auto'
                                                             />
+                                                        </a>
+                                                    </Flex>
+                                                )}
+
+                                                {/* Embed link to external site if only that is provided - need to fix this */}
+                                                {postUrlIsTweet && (
+                                                    <Flex justify='center' alignItems='center'mt='30px'>
+                                                        <a
+                                                            href={postData.url}
+                                                            target='_blank'
+                                                            rel='noopener noreferrer'
+                                                        >
+                                                            {postData.url}
                                                         </a>
                                                     </Flex>
                                                 )}
