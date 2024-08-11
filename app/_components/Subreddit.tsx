@@ -275,16 +275,29 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                     </Flex>
                                                 )}
 
-                                                {/* Embed link to external site if only that is provided - need to fix this */}
+                                                {/* Embed link to external site (like Twitter) if only that is provided */}
                                                 {postUrlIsTweet && (
-                                                    <Flex justify='center' alignItems='center'mt='30px'>
-                                                        <a
-                                                            href={postData.url}
-                                                            target='_blank'
-                                                            rel='noopener noreferrer'
-                                                        >
-                                                            {postData.url}
-                                                        </a>
+                                                    <Flex
+                                                        justify='center'
+                                                        alignItems='center'
+                                                        mt='30px'
+                                                        border='solid thin #d7d7d7'
+                                                        borderRadius='7px'
+                                                        minH='40px'
+                                                        pl='25px'
+                                                        pr='25px'
+                                                        pt='15px'
+                                                        pb='15px'
+                                                    >
+                                                        <Text w='100%' textAlign='center'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                {postData.url}
+                                                            </a>
+                                                        </Text>
                                                     </Flex>
                                                 )}
                                             </Flex>
