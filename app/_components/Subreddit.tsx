@@ -32,9 +32,12 @@ import extractYouTubeUrl from '../_reddit/extractYouTubeUrl';
 import IsExternalLink from '../_reddit/IsExternalLink';
 
 const renderers: Components = {
-    ul: ({ children }) => <ul style={{ marginLeft: '1.5rem', marginTop: '15px' }}>{children}</ul>,
-    ol: ({ children }) => <ol>{children}</ol>,
+    ul: ({ children }) => <ul style={{ marginLeft: '1.5rem', marginTop: '15px', marginBottom: '15px' }}>{children}</ul>,
+    ol: ({ children }) => (
+        <ol style={{ marginLeft: '1.75rem', listStyleType: 'decimal', marginTop: '15px', marginBottom: '15px' }}>{children}</ol>
+      ),
     li: ({ children }) => <li style={{ marginLeft: '0.5rem' }}>{children}</li>,
+    h1: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
     h3: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
     p: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
     thead: ({ children }) => <thead style={{ marginLeft: '1rem' }}>{children}</thead>,
