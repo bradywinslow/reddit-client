@@ -29,6 +29,7 @@ import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
 import extractYouTubeUrl from '../_reddit/extractYouTubeUrl';
+import IsExternalLink from '../_reddit/IsExternalLink';
 
 const renderers: Components = {
     ul: ({ children }) => <ul style={{ marginLeft: '1.5rem', marginTop: '15px' }}>{children}</ul>,
@@ -128,9 +129,9 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 const postThumbnail = postData.thumbnail;
                                 const postThumbnailPhoto = postThumbnail.endsWith('.jpg');
 
-                                // Check if url begins with https://twitter.com to prevent a blank spot appearing on a card
+                                // Check if url is an external link
                                 const postUrl = postData.url;
-                                const postUrlIsTweet = postUrl.includes('twitter.com');
+                                const postUrlIsExternalLink = IsExternalLink(postUrl);
 
                                 // Extract YouTube URL if YouTube video is included in subreddit post
                                 const stringToExtractUrlFrom = postData.media_embed?.content;
@@ -204,7 +205,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )} */}
 
                                                 {/* Embed non-YouTube video in subreddit post card if there is one */}
-                                                {!postUrlIsTweet && postData.secure_media?.reddit_video?.fallback_url && (
+                                                {postData.secure_media?.reddit_video?.fallback_url && (
                                                     <Flex justify='center' alignItems='center' mt='30px'>
                                                         <Box borderRadius='7px' overflow='hidden'>
                                                             <iframe
@@ -218,7 +219,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Embed YouTube video in subreddit post card if there is one */}
-                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postThumbnail === '' && postData.media_embed?.content && (
+                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center' mt='30px'>
                                                         <Box borderRadius='7px' overflow='hidden'>
                                                             <iframe
@@ -234,7 +235,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show thumbnail image if original subreddit post includes one */}
-                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && (
+                                                {!postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -255,7 +256,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show url_overridden_by_dest image if original subreddit post includes one */}
-                                                {!postUrlIsTweet && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && (
+                                                {!postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -275,8 +276,8 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                     </Flex>
                                                 )}
 
-                                                {/* Embed link to external site (like Twitter) if only that is provided */}
-                                                {postUrlIsTweet && (
+                                                {/* Display link to external site when there is no media (photos/videos) */}
+                                                {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && !postData.media_embed?.content && (
                                                     <Flex
                                                         justify='center'
                                                         alignItems='center'
