@@ -239,7 +239,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Embed YouTube video in subreddit post card if there is one */}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && (
+                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && (
                                                     <Flex justify='center' alignItems='center' mt='30px'>
                                                         <Box borderRadius='7px' overflow='hidden'>
                                                             <iframe
@@ -297,7 +297,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Display link to external site when there is no media (photos/videos) */}
-                                                {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && !postData.media_embed?.content && (
+                                                {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && (
                                                     <Flex
                                                         justify='center'
                                                         alignItems='center'
@@ -310,7 +310,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         pt='15px'
                                                         pb='15px'
                                                     >
-                                                        <Text w='100%' textAlign='center'>
+                                                        <Text w='100%' textAlign='center' fontSize='14px'>
                                                             <a
                                                                 href={postData.url}
                                                                 target='_blank'
