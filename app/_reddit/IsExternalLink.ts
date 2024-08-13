@@ -5,9 +5,7 @@ export default function IsExternalLink(postUrl: string) {
         !postUrl.endsWith('.jpg') &&
         !postUrl.endsWith('.png') &&
         !postUrl.includes('.reddit.com') &&
-        !postUrl.includes('.redd.it') &&
-        !postUrl.includes('.youtube.com') &&
-        !postUrl.includes('.youtu.be')
+        !postUrl.includes('.redd.it')
     ) {
         return true;
     } else {

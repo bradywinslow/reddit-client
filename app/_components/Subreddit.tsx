@@ -17,7 +17,6 @@ import {
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
 import getSubredditData from '../_reddit/httpRequests';
-import { formatDistance } from 'date-fns';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
@@ -30,6 +29,7 @@ import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
 import extractYouTubeUrl from '../_reddit/extractYouTubeUrl';
 import IsExternalLink from '../_reddit/IsExternalLink';
+import convertUtcToTimeElapsed from '../_reddit/convertUtcToTimeElapsed';
 
 const renderers: Components = {
     ul: ({ children }) => <ul style={{ marginLeft: '1.5rem', marginTop: '15px', marginBottom: '15px' }}>{children}</ul>,
@@ -125,8 +125,10 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 // Remove zero-width spaces in returned Markdown
                                 const postText = postData.selftext;
                                 const cleanedPostText = removeZeroWidthSpaces(postText);
-                                // const crossPostText = postData.crosspost_parent_list?.selftext;
-                                // const cleanedCrossPostText = removeZeroWidthSpaces(crossPostText);
+                                
+                                // Remove zero-width spaces in returned Markdown for crossposts
+                                const crossPost = postData.crosspost_parent_list?.[0];
+                                const cleanedCrossPostText = removeZeroWidthSpaces(crossPost?.selftext || '');
 
                                 // Check if thumbnail ends in .jpg to prevent a blank spot appearing on a card
                                 const postThumbnail = postData.thumbnail;
@@ -140,10 +142,11 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                 const stringToExtractUrlFrom = postData.media_embed?.content;
                                 const youTubeUrl = extractYouTubeUrl(stringToExtractUrlFrom);
                                 
-                                // Convert date/time Reddit post created to time elapsed since post created
+                                // Convert date/time Subreddit post created to time elapsed since post created
                                 const timestamp = postData.created_utc;
-                                const currentDate = new Date(0);
-                                const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
+                                const crossPostTimestamp = crossPost?.created_utc;
+                                const timeElapsed = convertUtcToTimeElapsed(timestamp);
+                                const crossPostTimeElapsed = convertUtcToTimeElapsed(crossPostTimestamp);
 
                                 return (
                                     <Card w={[200, 400, 500, 700]} key={index} mb={7} px='15px'>
@@ -182,30 +185,44 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                     </Box>
                                                 </Flex>
                                                 
-                                                {/* Show crosspost if original subreddit post includes one - not sure why I can't get this to work
-                                                {postData.thumbnail === 'default' && postData.crosspost_parent_list?.selftext && (
-                                                    <Flex direction='column' gap={5}>
-                                                        <Flex direction='column' w='100%'>
-                                                            <Heading as='h5' size='sm'>
-                                                                <ReactMarkdown
-                                                                    remarkPlugins={[remarkGfm, remarkRehype]}
-                                                                    rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                                >
-                                                                    {postData.crosspost_parent_list?.title}
-                                                                </ReactMarkdown>
-                                                            </Heading>
-                                                            <Box mt={15} width='auto' fontSize='12px'>
-                                                                <ReactMarkdown
-                                                                    remarkPlugins={[remarkGfm, remarkRehype]}
-                                                                    rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                                    components={renderers}
-                                                                >
-                                                                    {postData.crosspost_parent_list?.selftext}
-                                                                </ReactMarkdown>
-                                                            </Box>
+                                                { /* Show crosspost if original subreddit post includes one */ }
+                                                {crossPost && (
+                                                    <Flex
+                                                        direction='column'
+                                                        w='100%'
+                                                        border='solid thin #d7d7d7'
+                                                        borderRadius='7px'
+                                                        mt='30px'
+                                                        p='15px'
+                                                    >
+                                                        <Flex>
+                                                            <Flex gap='4' alignItems='center' flexWrap='wrap'>
+                                                                <Box>
+                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
+                                                                </Box>
+
+                                                            </Flex>
                                                         </Flex>
+
+                                                        <Heading as='h6' size='xs'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {crossPost?.title}
+                                                            </ReactMarkdown>
+                                                        </Heading>
+                                                        <Box mt='10px' width='auto' fontSize='12px'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                                components={renderers}
+                                                            >
+                                                                {cleanedCrossPostText}
+                                                            </ReactMarkdown>
+                                                        </Box>
                                                     </Flex>
-                                                )} */}
+                                                )}
 
                                                 {/* Embed non-YouTube video in subreddit post card if there is one */}
                                                 {postData.secure_media?.reddit_video?.fallback_url && (
@@ -238,7 +255,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show thumbnail image if original subreddit post includes one */}
-                                                {!postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
+                                                {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -259,7 +276,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 )}
 
                                                 {/* Show url_overridden_by_dest image if original subreddit post includes one */}
-                                                {!postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
+                                                {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
                                                     <Flex justify='center' alignItems='center'mt='30px'>
                                                         <a
                                                             href={postData.url}
@@ -304,6 +321,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         </Text>
                                                     </Flex>
                                                 )}
+
                                             </Flex>
                                         </CardBody>
 
