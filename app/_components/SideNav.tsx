@@ -21,7 +21,7 @@ export default function SideNav() {
             h='100%'
             borderRight='solid thin #d7d7d7'
             direction='column'
-            overflowX='scroll'
+            overflowY='auto'
             position='fixed'
             overscrollBehavior='none'
         >

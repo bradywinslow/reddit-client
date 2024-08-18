@@ -93,7 +93,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
         <Box>
             {isLoading ? (
                 <Box minH='100vh'>
-                    <Flex direction='column' align='end' pr='25px'>
+                    <Flex direction='column' align='center'>
                         <SearchBar />
                     </Flex>
 
@@ -111,7 +111,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 
             ) : (
                 <Box minH='100vh'>
-                    <Flex direction='column' align='end' pr='25px'>
+                    <Flex direction='column' align='center'>
                         <SearchBar />
                     </Flex>
 

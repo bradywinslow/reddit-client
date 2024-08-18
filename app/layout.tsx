@@ -1,5 +1,5 @@
 import { Providers } from './providers';
-import { Grid, GridItem } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import Header from './_components/Header';
 import SideNav from './_components/SideNav';
 import './globals.css';
@@ -9,23 +9,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>
-          <Grid
-            templateAreas={`'header header'
-                            'nav main'`}
-            gridTemplateRows={'1fr 4fr'}
-            gridTemplateColumns={'250px 4fr'}
-            h='100vh'
-          >
-            <GridItem area={'header'}>
-              <Header />
-            </GridItem>
-            <GridItem area={'nav'}>
-              <SideNav />
-            </GridItem>
-            <GridItem area={'main'}>
-              {children}
-            </GridItem>
-          </Grid>
+          <Flex direction='column' minHeight='100vh'>
+            <Header />
+            <Flex direction='row' flex='1'>
+              <Flex width='250px' flexShrink={0}>
+                <SideNav />
+              </Flex>
+              <Flex justify='center' flex='1' overflowY='auto'>
+                {children}
+              </Flex>
+            </Flex>
+          </Flex>
         </Providers>
       </body>
     </html>
