@@ -12,10 +12,10 @@ export default function MobileMenu() {
                 as={IconButton}
                 icon={<IoMenu />}
                 _hover={{ bg: 'gray.200' }}
-                _expanded={{ bg: 'gray.400' }}
+                _expanded={{ bg: 'gray.300' }}
                 bg='white'
             />
-                <Flex align='center' justify='center' overflow='scroll'>
+                <Flex align='center' justify='center'>
                     <MenuList>
                         {subredditData.map((item, index) => {
                             return (
