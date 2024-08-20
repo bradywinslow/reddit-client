@@ -14,10 +14,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>
-          {!isMobile ? (
-            <Flex direction='column' minHeight='100vh'>
+
+            <Flex
+              direction='column'
+              minHeight='100vh'
+              display={isMobile ? "none" : "block"}
+            >
               <DesktopHeader />
-              <Flex direction='row' flex='1'>
+              <Flex direction='row' flexGrow='1' overflowY='auto'>
                 <Flex width='250px' flexShrink={0}>
                   <SideNav />
                 </Flex>
@@ -26,8 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Flex>
               </Flex>
             </Flex>
-          ) : (
-            <Flex direction='column' minHeight='100vh'>
+
+            <Flex
+              direction='column'
+              minHeight='100vh'
+              display={!isMobile ? "none" : "block"}
+            >
               <MobileHeader />
               <Flex direction='row' flex='1'>
                 <Flex justify='center' flex='1' overflowY='auto'>
@@ -35,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Flex>
               </Flex>
             </Flex>
-          )}
+
         </Providers>
       </body>
     </html>

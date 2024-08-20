@@ -16,7 +16,6 @@ export default function Header() {
             borderBottom='solid thin #d7d7d7'
             height='75px'
             position='fixed'
-            top='0'
             w='100%'
             zIndex='9999'
             bgColor='white'
