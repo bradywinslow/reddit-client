@@ -92,7 +92,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
     return (
         <Box>
             {isLoading ? (
-                <Box minH='100vh'>
+                <Box h='100vh'>
                     <Flex direction='column' align='center'>
                         <SearchBar />
                     </Flex>
@@ -110,7 +110,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 </Box>
                 
             ) : (
-                <Box minH='100vh'>
+                <Box h='100vh'>
                     <Flex direction='column' align='center'>
                         <SearchBar />
                     </Flex>
@@ -118,7 +118,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                     <Flex direction='column' align='center'>
                         <SubHeader subredditName={subredditName} />
 
-                        {filteredData.length > 0 ? (
+                        {filteredData.length > 0 && !isLoading ? (
                             filteredData.map((item: any, index: number) => {
                                 const postData = item.data;
                                 

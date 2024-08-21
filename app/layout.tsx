@@ -21,11 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               display={isMobile ? "none" : "block"}
             >
               <DesktopHeader />
-              <Flex direction='row' flexGrow='1' overflowY='auto'>
+              <Flex direction='row' flexGrow='1'>
                 <Flex width='250px' flexShrink={0}>
                   <SideNav />
                 </Flex>
-                <Flex justify='center' flex='1' overflowY='auto'>
+                <Flex justify='center' flex='1'>
                   {children}
                 </Flex>
               </Flex>
@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               <MobileHeader />
               <Flex direction='row' flex='1'>
-                <Flex justify='center' flex='1' overflowY='auto'>
+                <Flex justify='center' flex='1'>
                   {children}
                 </Flex>
               </Flex>

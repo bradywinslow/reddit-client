@@ -14,7 +14,7 @@ export default function Header() {
             justify='center'
             align='center'
             borderBottom='solid thin #d7d7d7'
-            height='75px'
+            h='75px'
             position='fixed'
             w='100%'
             zIndex='9999'
@@ -25,7 +25,7 @@ export default function Header() {
                 justify='start'
                 align='center'
                 width='100%'
-                height='100%'
+                h='100%'
                 ml={['5px', '20px', '35px', '50px']}
                 gap={2}
             >

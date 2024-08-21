@@ -16,14 +16,12 @@ export default function SideNav() {
         <Flex
             px={25}
             mt='75px'
-            mb='100px'
             w='250px'
-            h='100%'
+            h='calc(100vh - 75px)'
             borderRight='solid thin #d7d7d7'
             direction='column'
             overflowY='auto'
             position='fixed'
-            overscrollBehavior='none'
         >
             <Heading
                 as='h2'
@@ -42,7 +40,6 @@ export default function SideNav() {
                     w='100%'
                     direction='column'
                     gap={5}
-                    pb={70}
                 >
                     {subredditData.map((item, index) => {
                         return (

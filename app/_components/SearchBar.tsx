@@ -30,7 +30,7 @@ export default function SearchBar() {
     }, 300);
 
     return (
-        <Flex mt='95px'>
+        <Flex mt='110px'>
             <FormControl>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none'>
@@ -40,7 +40,7 @@ export default function SearchBar() {
                         <FormLabel htmlFor='search'>Search</FormLabel>
                     </VisuallyHidden>
                     <Input
-                        type='text'
+                        type='search'
                         id='search'
                         name='search'
                         autoComplete='off'
