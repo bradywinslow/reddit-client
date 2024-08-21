@@ -37,8 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               display={!isMobile ? "none" : "flex"}
             >
               <MobileHeader />
-              <Flex direction='row' flex='1'>
-                <Flex justify='center' flex='1'>
+              <Flex direction='row' flex='1' overflow='hidden'>
+                <Flex justify='center' flex='1' overflowY='auto' mt='75px'>
                   {children}
                 </Flex>
               </Flex>
