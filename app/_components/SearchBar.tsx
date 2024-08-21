@@ -30,7 +30,7 @@ export default function SearchBar() {
     }, 300);
 
     return (
-        <Flex mt='110px'>
+        <Flex mt='25px'>
             <FormControl>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none'>
