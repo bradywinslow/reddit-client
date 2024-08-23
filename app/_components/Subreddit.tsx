@@ -91,6 +91,8 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
 
     return (
         <Box>
+
+            {/* Loading skeleton */}
             {isLoading ? (
                 <Box h='100vh'>
                     <Flex direction='column' align='center'>
@@ -109,7 +111,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                     </Box>
                 </Box>
                 
-            ) : filteredData.length === 0 && query ? (
+            ) : filteredData.length === 0 && query ? ( // Show "No results found" when search term returns zero results
                 <Text>No results found.</Text>
             ) : (
                 <Box h='100vh'>
@@ -189,44 +191,145 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                             { /* Show crosspost if original subreddit post includes one */ }
                                             {crossPost && (
                                                 <Flex
-                                                    direction='column'
-                                                    w='100%'
+                                                    direction='column'    
                                                     border='solid thin #d7d7d7'
                                                     borderRadius='7px'
-                                                    mt='30px'
-                                                    p='15px'
+                                                    mt='15px'
+                                                    p='20px'
                                                 >
-                                                    <Flex>
-                                                        <Flex gap='4' alignItems='center' flexWrap='wrap'>
-                                                            <Box>
-                                                                <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
-                                                            </Box>
+                                                    <Flex
+                                                        direction='column' w='100%'>
+                                                        <Flex>
+                                                            <Flex gap='4' alignItems='center' flexWrap='wrap'>
+                                                                <Box>
+                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
+                                                                </Box>
 
+                                                            </Flex>
                                                         </Flex>
+
+                                                        <Heading as='h6' size='xs'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {crossPost?.title}
+                                                            </ReactMarkdown>
+                                                        </Heading>
+                                                        <Box mt='10px' width='auto' fontSize='12px'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                                components={renderers}
+                                                            >
+                                                                {cleanedCrossPostText}
+                                                            </ReactMarkdown>
+                                                        </Box>
                                                     </Flex>
 
-                                                    <Heading as='h6' size='xs'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                        >
-                                                            {crossPost?.title}
-                                                        </ReactMarkdown>
-                                                    </Heading>
-                                                    <Box mt='10px' width='auto' fontSize='12px'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                            components={renderers}
-                                                        >
-                                                            {cleanedCrossPostText}
-                                                        </ReactMarkdown>
-                                                    </Box>
+                                                    {/* Embed non-YouTube video in subreddit crosspost card if there is one */}
+                                                    {postData.secure_media?.reddit_video?.fallback_url && (
+                                                        <Flex justify='center' alignItems='center' mt='20px'>
+                                                            <Box borderRadius='7px' overflow='hidden'>
+                                                                <iframe
+                                                                    src={postData.secure_media?.reddit_video?.fallback_url}
+                                                                    width='300px'
+                                                                    height='187px'
+                                                                    allowFullScreen
+                                                                />
+                                                            </Box>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Embed YouTube video in subreddit crosspost card if there is one */}
+                                                    {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && (
+                                                        <Flex justify='center' alignItems='center' mt='20px'>
+                                                            <Box borderRadius='7px' overflow='hidden'>
+                                                                <iframe
+                                                                    src={`https://www.youtube-nocookie.com/embed/${youTubeUrl}`}
+                                                                    width='300px'
+                                                                    height='187px'
+                                                                    frameBorder='0'
+                                                                    allow='encrypted-media'
+                                                                    allowFullScreen
+                                                                />
+                                                            </Box>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Show thumbnail image if original subreddit crosspost includes one */}
+                                                    {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
+                                                        <Flex justify='center' alignItems='center'mt='20px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Image
+                                                                    src={postThumbnail}
+                                                                    alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                                    borderRadius='7px'
+                                                                    bg='black'
+                                                                    textColor='grey'
+                                                                    h='150px'
+                                                                    w='auto'
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Show url_overridden_by_dest image if original subreddit crosspost includes one */}
+                                                    {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
+                                                        <Flex justify='center' alignItems='center'mt='20px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Image
+                                                                    src={postData.url_overridden_by_dest}
+                                                                    alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                                    borderRadius='7px'
+                                                                    bg='black'
+                                                                    textColor='grey'
+                                                                    h='150px'
+                                                                    w='auto'
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    )}
+
+                                                {/* Display link to external site when there is no media (photos/videos) in crosspost */}
+                                                {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && (
+                                                    <Flex
+                                                        justify='center'
+                                                        alignItems='center'
+                                                        mt='20px'
+                                                        border='solid thin #d7d7d7'
+                                                        borderRadius='7px'
+                                                        minH='40px'
+                                                        pl='25px'
+                                                        pr='25px'
+                                                        pt='15px'
+                                                        pb='15px'
+                                                    >
+                                                        <Text w='100%' textAlign='center' fontSize='14px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                {postData.url}
+                                                            </a>
+                                                        </Text>
+                                                    </Flex>
+                                                )}
+
                                                 </Flex>
                                             )}
 
                                             {/* Embed non-YouTube video in subreddit post card if there is one */}
-                                            {postData.secure_media?.reddit_video?.fallback_url && (
+                                            {postData.secure_media?.reddit_video?.fallback_url && !crossPost && (
                                                 <Flex justify='center' alignItems='center' mt='30px'>
                                                     <Box borderRadius='7px' overflow='hidden'>
                                                         <iframe
@@ -240,7 +343,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                             )}
 
                                             {/* Embed YouTube video in subreddit post card if there is one */}
-                                            {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && (
+                                            {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && !crossPost && (
                                                 <Flex justify='center' alignItems='center' mt='30px'>
                                                     <Box borderRadius='7px' overflow='hidden'>
                                                         <iframe
@@ -298,7 +401,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                             )}
 
                                             {/* Display link to external site when there is no media (photos/videos) */}
-                                            {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && (
+                                            {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && !crossPost && (
                                                 <Flex
                                                     justify='center'
                                                     alignItems='center'
