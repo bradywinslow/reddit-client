@@ -112,7 +112,17 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 </Box>
                 
             ) : filteredData.length === 0 && query ? ( // Show "No results found" when search term returns zero results
-                <Text>No results found.</Text>
+                <Box h='100vh'>
+                    <Flex direction='column' align='center'>
+                        <SearchBar />
+                    </Flex>
+
+                    <Flex direction='column' align='center'>
+                        <SubHeader subredditName={subredditName} />
+                    </Flex>
+
+                    <Text textAlign='center'>No results found.</Text>
+                </Box>
             ) : (
                 <Box h='100vh'>
                     <Flex direction='column' align='center'>
