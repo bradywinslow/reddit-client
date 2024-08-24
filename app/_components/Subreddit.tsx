@@ -89,7 +89,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
     }, [query, subredditData]);
 
     return (
-        <Box mt='100px'>
+        <Box mt='125px'>
 
             {/* Loading skeleton */}
             {isLoading ? (
