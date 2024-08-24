@@ -23,7 +23,6 @@ import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeRaw from 'rehype-raw';
 import SubHeader from '../_components/SubHeader';
-import SearchBar from './SearchBar';
 import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
