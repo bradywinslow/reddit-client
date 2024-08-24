@@ -31,7 +31,7 @@ export default function Header() {
                 mx={['5px', '20px', '35px', '50px']}
                 gap={2}
             >
-                <Flex>
+                <Flex gap='3px'>
                     <MobileMenu />
                     <Flex align='center'>
                         <Link href='/'>
