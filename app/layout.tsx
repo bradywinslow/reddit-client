@@ -1,5 +1,5 @@
 import { Providers } from './providers';
-import LayoutContent from './_components/layoutConent';
+import LayoutContent from './_components/LayoutContent';
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Flex, useMediaQuery } from '@chakra-ui/react';
-import DesktopHeader from '../_components/DesktopHeader';
-import MobileHeader from '../_components/MobileHeader';
-import SideNav from '../_components/SideNav';
+import DesktopHeader from './DesktopHeader';
+import MobileHeader from './MobileHeader';
+import SideNav from './SideNav';
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
