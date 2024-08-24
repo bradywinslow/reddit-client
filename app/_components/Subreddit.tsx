@@ -438,19 +438,21 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                         },
                                         }}
                                     >
-                                        <Button
-                                            flex='1'
-                                            variant='ghost'
-                                            rightIcon={<IoOpenOutline />}
+                                        <a
+                                            href={`https://www.reddit.com${postData.permalink}`}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            style={{ width:'100%' }}
                                         >
-                                            <a
-                                                href={`https://www.reddit.com${postData.permalink}`}
-                                                target='_blank'
-                                                rel='noopener noreferrer'
+                                            <Button
+                                                flex='1'
+                                                variant='ghost'
+                                                rightIcon={<IoOpenOutline />}
+                                                w='100%'
                                             >
-                                                Open
-                                            </a>
-                                        </Button>
+                                                Open        
+                                            </Button>
+                                        </a>
                                     </CardFooter>
                                 </Card>
                             )
