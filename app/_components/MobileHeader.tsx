@@ -7,6 +7,7 @@ import {
 import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
 import MobileMenu from './MobileMenu';
+import SearchBar from './SearchBar';
 
 export default function Header() {
 
@@ -23,20 +24,22 @@ export default function Header() {
         >
             <Flex
                 direction='row'
-                justify='start'
+                justify='space-between'
                 align='center'
                 width='100%'
                 h='100%'
-                ml={['5px', '20px', '35px', '50px']}
+                mx={['5px', '20px', '35px', '50px']}
                 gap={2}
             >
-                <MobileMenu />
-                <Link href='/'>
-                    <Flex direction='row' align='center' width='100%' gap={2}>
-                        <Icon as={SiReddit} boxSize={7} color='#ff6314' />
-                        <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
+                <Flex>
+                    <MobileMenu />
+                    <Flex align='center'>
+                        <Link href='/'>
+                            <Icon as={SiReddit} boxSize={7} color='#ff6314' />
+                        </Link>
                     </Flex>
-                </Link>
+                </Flex>
+                <SearchBar />
             </Flex>
         </Flex>
     )

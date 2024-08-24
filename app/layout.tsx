@@ -6,6 +6,7 @@ import { Flex, useMediaQuery } from '@chakra-ui/react';
 import DesktopHeader from './_components/DesktopHeader';
 import MobileHeader from './_components/MobileHeader';
 import SideNav from './_components/SideNav';
+import SearchBar from './_components/SearchBar';
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -22,38 +23,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>
-          
-          {/* Desktop view */}
-          <Flex
-            direction='column'
-            h='100vh'
-            display={isMobile ? "none" : "flex"}
-          >
-            <DesktopHeader />
+          <Flex direction='column' h='100vh'>
+            {/* Conditionally render MobileHeader or DesktopHeader */}
+            {isMobile ? <MobileHeader /> : <DesktopHeader />}
+
             <Flex direction='row' flex='1' overflow='hidden'>
-              <Flex width='250px' flexShrink={0}>
-                <SideNav />
-              </Flex>
-              <Flex justify='center' flex='1' overflowY='auto' mt='75px'>
+              {/* Conditionally render sideNav in desktop view */}
+              {!isMobile && (
+                  <Flex width='250px' flexShrink={0}>
+                    <SideNav />
+                </Flex>
+              )}
+              <Flex
+                direction='column'
+                align='center'
+                justify='center'
+                w='100%'
+                flex='1'
+                overflowY='auto'
+                mt='75px'
+              >
                 {children}
               </Flex>
             </Flex>
           </Flex>
-
-          {/* Mobile view */}
-          <Flex
-            direction='column'
-            h='100vh'
-            display={!isMobile ? "none" : "flex"}
-          >
-            <MobileHeader />
-            <Flex direction='row' flex='1' overflow='hidden'>
-              <Flex justify='center' flex='1' overflowY='auto' mt='75px'>
-                {children}
-              </Flex>
-            </Flex>
-          </Flex>
-
         </Providers>
       </body>
     </html>

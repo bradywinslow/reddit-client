@@ -6,6 +6,7 @@ import {
     Icon } from '@chakra-ui/react';
 import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
+import SearchBar from './SearchBar';
 
 export default function Header() {
 
@@ -22,11 +23,11 @@ export default function Header() {
         >
             <Flex
                 direction='row'
-                justify='start'
+                justify='space-between'
                 align='center'
                 width='100%'
                 h='100%'
-                ml={['5px', '20px', '35px', '50px']}
+                mx={['5px', '20px', '35px', '50px']}
                 gap={2}
             >
                 <Link href='/'>
@@ -35,6 +36,7 @@ export default function Header() {
                         <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
                     </Flex>
                 </Link>
+                <SearchBar />
             </Flex>
         </Flex>
     )

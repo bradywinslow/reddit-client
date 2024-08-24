@@ -90,17 +90,13 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
     }, [query, subredditData]);
 
     return (
-        <Box>
+        <Box mt='100px'>
 
             {/* Loading skeleton */}
             {isLoading ? (
                 <Box h='100vh'>
                     <Flex direction='column' align='center'>
-                        <SearchBar />
-                    </Flex>
-
-                    <Flex direction='column' align='center'>
-                        <Box w={[175, 200, 225, 250]} m={5}>
+                        <Box w={[175, 200, 225, 250]} mb={5}>
                             <Skeleton h='40px' />
                         </Box>
                     </Flex>
@@ -114,10 +110,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
             ) : filteredData.length === 0 && query ? ( // Show "No results found" when search term returns zero results
                 <Box h='100vh'>
                     <Flex direction='column' align='center'>
-                        <SearchBar />
-                    </Flex>
-
-                    <Flex direction='column' align='center'>
                         <SubHeader subredditName={subredditName} />
                     </Flex>
 
@@ -125,10 +117,6 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                 </Box>
             ) : (
                 <Box h='100vh'>
-                    <Flex direction='column' align='center'>
-                        <SearchBar />
-                    </Flex>
-
                     <Flex direction='column' align='center'>
                         <SubHeader subredditName={subredditName} />
 
