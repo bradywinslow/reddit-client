@@ -42,7 +42,8 @@ const renderers: Components = {
     thead: ({ children }) => <thead style={{ marginLeft: '1rem' }}>{children}</thead>,
     tbody: ({ children }) => <tbody style={{ marginLeft: '1rem' }}>{children}</tbody>,
     th: ({ children }) => <th style={{ border: '1px solid #ccc', padding: '8px 10px' }}>{children}</th>,
-    td: ({ children }) => <td style={{ border: '1px solid #ccc', padding: '8px 10px', textAlign: 'center' }}>{children}</td>
+    td: ({ children }) => <td style={{ border: '1px solid #ccc', padding: '8px 10px', textAlign: 'center' }}>{children}</td>,
+    code: ({ children }) => <code style={{ background: '#f4f4f4', border: '1px solid #ddd', borderLeft: '3px solid #f36d33', color: '#666', pageBreakInside: 'avoid', fontFamily: 'monospace', fontSize: '15px', lineHeight: '1.6', marginTop: '10px', maxWidth: '100%', overflow: 'auto', padding: '1em 1.5em', display: 'block', wordWrap: 'break-word' }}>{children}</code>
 }
 
 interface SubredditProps {
