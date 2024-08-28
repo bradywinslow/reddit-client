@@ -2,14 +2,13 @@
 
 import {
     Flex,
-    Heading,
     Icon } from '@chakra-ui/react';
 import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
 import MobileMenu from './MobileMenu';
 import SearchBar from './SearchBar';
 
-export default function Header() {
+export default function MobileHeader() {
 
     return (
         <Flex

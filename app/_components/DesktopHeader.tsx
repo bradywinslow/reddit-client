@@ -8,7 +8,7 @@ import { SiReddit } from 'react-icons/si';
 import Link from 'next/link';
 import SearchBar from './SearchBar';
 
-export default function Header() {
+export default function DesktopHeader() {
 
     return (
         <Flex
