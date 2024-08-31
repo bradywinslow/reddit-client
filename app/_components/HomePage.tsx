@@ -13,45 +13,66 @@ import {
     Flex,
     Heading,
     Image,
-    Skeleton,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
-import getSubredditData from '../_reddit/httpRequests';
-import { formatDistance } from 'date-fns';
-import ReactMarkdown from 'react-markdown';
+import getHomePageData from '../_reddit/getHomePageData';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeRaw from 'rehype-raw';
 import LoadingSkeleton from './LoadingSkeleton';
-// import { useSearchParams } from 'next/navigation';
-// import { subredditData } from '../_reddit/subredditData';
-import { sampleData } from '../_reddit/subredditData';
+import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
+import extractYouTubeUrl from '../_reddit/extractYouTubeUrl';
+import IsExternalLink from '../_reddit/IsExternalLink';
+import convertUtcToTimeElapsed from '../_reddit/convertUtcToTimeElapsed';
 
-export default function HomePage() {
+const renderers: Components = {
+    ul: ({ children }) => <ul style={{ marginLeft: '1.5rem', marginTop: '15px', marginBottom: '15px' }}>{children}</ul>,
+    ol: ({ children }) => (
+        <ol style={{ marginLeft: '1.75rem', listStyleType: 'decimal', marginTop: '15px', marginBottom: '15px' }}>{children}</ol>
+      ),
+    li: ({ children }) => <li style={{ marginLeft: '0.5rem' }}>{children}</li>,
+    h1: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
+    h3: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
+    p: ({ children }) => <Text mt={4} mb={0}>{children}</Text>,
+    thead: ({ children }) => <thead style={{ marginLeft: '1rem' }}>{children}</thead>,
+    tbody: ({ children }) => <tbody style={{ marginLeft: '1rem' }}>{children}</tbody>,
+    th: ({ children }) => <th style={{ border: '1px solid #ccc', padding: '8px 10px' }}>{children}</th>,
+    td: ({ children }) => <td style={{ border: '1px solid #ccc', padding: '8px 10px', textAlign: 'center' }}>{children}</td>,
+    code: ({ children }) => <code style={{ background: '#f4f4f4', border: '1px solid #ddd', borderLeft: '3px solid #ff6314', color: '#666', pageBreakInside: 'avoid', fontFamily: 'monospace', fontSize: '15px', lineHeight: '1.6', marginTop: '10px', maxWidth: '100%', overflow: 'auto', padding: '1em 1.5em', display: 'block', wordWrap: 'break-word' }}>{children}</code>
+}
+
+interface HomePageProps {
+    page: string;
+    subredditName: string;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ page }) => {
     const [homePageData, setHomePageData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    // const searchParams = useSearchParams();
-    // const query = searchParams.get('query')?.toString() || '';
-    // const [filteredData, setFilteredData] = useState([]);
+    const searchParams = useSearchParams();
+    const query = searchParams.get('query')?.toString() || '';
+    const [filteredData, setFilteredData] = useState([]);
     
     useEffect(() => {
         const fetchData = async () => {
-            let homePagePromises = sampleData.map(item => {            
-                return getSubredditData({ params: { page: item.page } });
-            })
-            const data = await Promise.all(homePagePromises);
-            console.log(data);
-            setHomePageData(data);
+            try {
+                const data = await getHomePageData();
+                setHomePageData(data);
+            } catch (error) {
+                console.error('Error fetching subreddit data:', error);
+            }
             setIsLoading(false);
         }
-        fetchData();
-    }, []);
 
-    /* useEffect(() => {
-        if (subredditData) {
-            const posts = subredditData?.data?.children || [];
+        fetchData();
+    }, [page]);
+
+    useEffect(() => {
+        if (homePageData) {
+            const posts = homePageData?.data?.children || [];
             if (query) {
                 setFilteredData(
                     posts.filter((item: any) => 
@@ -64,17 +85,15 @@ export default function HomePage() {
                 setFilteredData(posts);
             }
         }
-    }, [query, subredditData]); */
+    }, [query, homePageData]);
 
     return (
-        <Box>
+        <Box mt='125px'>
+
+            {/* Loading skeleton */}
             {isLoading ? (
-                <Box minH='100vh'>
-                    <Flex direction='column' align='center'>
-                        <Box w={[175, 200, 225, 250]} m={5}>
-                            <Skeleton h='40px' />
-                        </Box>
-                    </Flex>
+                <Box h='100vh'>
+                    
                     <Box gap='2px'>
                         <LoadingSkeleton />
                         <LoadingSkeleton />
@@ -82,124 +101,354 @@ export default function HomePage() {
                     </Box>
                 </Box>
                 
+            ) : filteredData.length === 0 && query ? ( // Show "No results found" when search term returns zero results
+                <Box h='100vh'>
+                    <Text textAlign='center'>No results found.</Text>
+                </Box>
             ) : (
-                <Box minH='100vh'>
+                <Box h='100vh'>
                     <Flex direction='column' align='center'>
-                        {homePageData.length > 0 ? (
-                            homePageData.map((item: any, index: number) => {
-                                const postData = item.data;
-                                const postText = postData.selftext;
-                                const cleanedPostText = removeZeroWidthSpaces(postText);
-                                
-                                // Convert date/time Reddit post created to time elapsed since post created
-                                const timestamp = postData.created_utc;
-                                const currentDate = new Date(0);
-                                const timeElapsed = formatDistance(currentDate.setUTCSeconds(timestamp), Date.now(), { addSuffix: true});
 
-                                return (
-                                    <Card w={[200, 400, 500, 700]} key={index} mb={7} px={['2px', '9px', '16px']} gap='2px'>
-                                        <CardHeader>
-                                            <Flex>
-                                                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                                    <Avatar name={`${postData.author}`} />
+                        {filteredData.map((item: any, index: number) => {
+                            const postData = item.data;
+                            
+                            // Remove zero-width spaces in returned Markdown
+                            const postText = postData.selftext;
+                            const cleanedPostText = removeZeroWidthSpaces(postText);
+                            
+                            // Remove zero-width spaces in returned Markdown for crossposts
+                            const crossPost = postData.crosspost_parent_list?.[0];
+                            const cleanedCrossPostText = removeZeroWidthSpaces(crossPost?.selftext || '');
 
-                                                    <Box>
-                                                        <Text fontSize='14px' as='b'>{postData.subreddit_name_prefixed}</Text>
-                                                        <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
-                                                    </Box>
+                            // Check if thumbnail ends in .jpg to prevent a blank spot appearing on a card
+                            const postThumbnail = postData.thumbnail;
+                            const postThumbnailPhoto = postThumbnail.endsWith('.jpg');
 
-                                                </Flex>
+                            // Check if url is an external link
+                            const postUrl = postData.url;
+                            const postUrlIsExternalLink = IsExternalLink(postUrl);
+
+                            // Extract YouTube URL if YouTube video is included in subreddit post
+                            const stringToExtractUrlFrom = postData.media_embed?.content;
+                            const youTubeUrl = extractYouTubeUrl(stringToExtractUrlFrom);
+                            
+                            // Convert date/time Subreddit post created to time elapsed since post created
+                            const timestamp = postData.created_utc;
+                            const crossPostTimestamp = crossPost?.created_utc;
+                            const timeElapsed = convertUtcToTimeElapsed(timestamp);
+                            const crossPostTimeElapsed = convertUtcToTimeElapsed(crossPostTimestamp);
+
+                            return (
+                                <Card w={[200, 400, 500, 700]} key={index} mb={7} px='15px'>
+                                    <CardHeader>
+                                        <Flex mb='-15px'>
+                                            <Flex gap='4' alignItems='center' flexWrap='wrap'>
+                                                <Avatar name={`${postData.author}`} />
+
+                                                <Box>
+                                                    <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
+                                                </Box>
+
                                             </Flex>
-                                        </CardHeader>
+                                        </Flex>
+                                    </CardHeader>
 
-                                        <CardBody>
-                                            <Flex direction='column' gap={5}>
-                                                <Flex direction='column' w='100%'>
-                                                    <Heading as='h4' size='sm'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                        >
-                                                            {postData.title}
-                                                        </ReactMarkdown>
-                                                    </Heading>
-                                                    <Box mt={15} width='auto' fontSize='14px'>
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm, remarkRehype]}
-                                                            rehypePlugins={[rehypeReact, rehypeRaw]}
-                                                        >
-                                                            {cleanedPostText}
-                                                        </ReactMarkdown>
+                                    <CardBody>
+                                        <Flex direction='column' mt='-1px' mb='-15px'>
+                                            <Flex direction='column' w='100%'>
+                                                <Heading as='h4' size='sm'>
+                                                    <ReactMarkdown
+                                                        remarkPlugins={[remarkGfm, remarkRehype]}
+                                                        rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                    >
+                                                        {postData.title}
+                                                    </ReactMarkdown>
+                                                </Heading>
+                                                <Box width='auto' fontSize='14px'>
+                                                    <ReactMarkdown
+                                                        remarkPlugins={[remarkGfm, remarkRehype]}
+                                                        rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                        components={renderers}
+                                                    >
+                                                        {cleanedPostText}
+                                                    </ReactMarkdown>
+                                                </Box>
+                                            </Flex>
+                                            
+                                            { /* Show crosspost if original subreddit post includes one */ }
+                                            {crossPost && (
+                                                <Flex
+                                                    direction='column'    
+                                                    border='solid thin #d7d7d7'
+                                                    borderRadius='7px'
+                                                    mt='15px'
+                                                    p='20px'
+                                                >
+                                                    <Flex
+                                                        direction='column' w='100%'>
+                                                        <Flex>
+                                                            <Flex gap='4' alignItems='center' flexWrap='wrap'>
+                                                                <Box>
+                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
+                                                                </Box>
+
+                                                            </Flex>
+                                                        </Flex>
+
+                                                        <Heading as='h6' size='xs'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                            >
+                                                                {crossPost?.title}
+                                                            </ReactMarkdown>
+                                                        </Heading>
+                                                        <Box mt='10px' width='auto' fontSize='12px'>
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm, remarkRehype]}
+                                                                rehypePlugins={[rehypeReact, rehypeRaw]}
+                                                                components={renderers}
+                                                            >
+                                                                {cleanedCrossPostText}
+                                                            </ReactMarkdown>
+                                                        </Box>
+                                                    </Flex>
+
+                                                    {/* Embed non-YouTube video in subreddit crosspost card if there is one */}
+                                                    {postData.secure_media?.reddit_video?.fallback_url && (
+                                                        <Flex justify='center' alignItems='center' mt='20px'>
+                                                            <Box borderRadius='7px' overflow='hidden'>
+                                                                <iframe
+                                                                    src={postData.secure_media?.reddit_video?.fallback_url}
+                                                                    width='300px'
+                                                                    height='187px'
+                                                                    allowFullScreen
+                                                                />
+                                                            </Box>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Embed YouTube video in subreddit crosspost card if there is one */}
+                                                    {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && (
+                                                        <Flex justify='center' alignItems='center' mt='20px'>
+                                                            <Box borderRadius='7px' overflow='hidden'>
+                                                                <iframe
+                                                                    src={`https://www.youtube-nocookie.com/embed/${youTubeUrl}`}
+                                                                    width='300px'
+                                                                    height='187px'
+                                                                    frameBorder='0'
+                                                                    allow='encrypted-media'
+                                                                    allowFullScreen
+                                                                />
+                                                            </Box>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Show thumbnail image if original subreddit crosspost includes one */}
+                                                    {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
+                                                        <Flex justify='center' alignItems='center'mt='20px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Image
+                                                                    src={postThumbnail}
+                                                                    alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                                    borderRadius='7px'
+                                                                    bg='black'
+                                                                    textColor='grey'
+                                                                    h='150px'
+                                                                    w='auto'
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    )}
+
+                                                    {/* Show url_overridden_by_dest image if original subreddit crosspost includes one */}
+                                                    {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
+                                                        <Flex justify='center' alignItems='center'mt='20px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Image
+                                                                    src={postData.url_overridden_by_dest}
+                                                                    alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                                    borderRadius='7px'
+                                                                    bg='black'
+                                                                    textColor='grey'
+                                                                    h='150px'
+                                                                    w='auto'
+                                                                />
+                                                            </a>
+                                                        </Flex>
+                                                    )}
+
+                                                {/* Display link to external site when there is no media (photos/videos) in crosspost */}
+                                                {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && (
+                                                    <Flex
+                                                        justify='center'
+                                                        alignItems='center'
+                                                        mt='20px'
+                                                        border='solid thin #d7d7d7'
+                                                        borderRadius='7px'
+                                                        minH='40px'
+                                                        pl='25px'
+                                                        pr='25px'
+                                                        pt='15px'
+                                                        pb='15px'
+                                                    >
+                                                        <Text w='100%' textAlign='center' fontSize='14px'>
+                                                            <a
+                                                                href={postData.url}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                {postData.url}
+                                                            </a>
+                                                        </Text>
+                                                    </Flex>
+                                                )}
+
+                                                </Flex>
+                                            )}
+
+                                            {/* Embed non-YouTube video in subreddit post card if there is one */}
+                                            {postData.secure_media?.reddit_video?.fallback_url && !crossPost && (
+                                                <Flex justify='center' alignItems='center' mt='30px'>
+                                                    <Box borderRadius='7px' overflow='hidden'>
+                                                        <iframe
+                                                            src={postData.secure_media?.reddit_video?.fallback_url}
+                                                            width='300px'
+                                                            height='187px'
+                                                            allowFullScreen
+                                                        />
                                                     </Box>
                                                 </Flex>
-                                                {postData.secure_media?.reddit_video?.fallback_url && (
-                                                    <Flex justify='center' alignItems='center'>
+                                            )}
+
+                                            {/* Embed YouTube video in subreddit post card if there is one */}
+                                            {!postData.secure_media?.reddit_video?.fallback_url && postData.media_embed?.content && postData.secure_media?.type === 'youtube.com' && !crossPost && (
+                                                <Flex justify='center' alignItems='center' mt='30px'>
+                                                    <Box borderRadius='7px' overflow='hidden'>
+                                                        <iframe
+                                                            src={`https://www.youtube-nocookie.com/embed/${youTubeUrl}`}
+                                                            width='300px'
+                                                            height='187px'
+                                                            frameBorder='0'
+                                                            allow='encrypted-media'
+                                                            allowFullScreen
+                                                        />
+                                                    </Box>
+                                                </Flex>
+                                            )}
+
+                                            {/* Show thumbnail image if original subreddit post includes one */}
+                                            {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && postThumbnailPhoto && !postData.media_embed?.content && (
+                                                <Flex justify='center' alignItems='center'mt='30px'>
+                                                    <a
+                                                        href={postData.url}
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
+                                                    >
+                                                        <Image
+                                                            src={postThumbnail}
+                                                            alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                            borderRadius='7px'
+                                                            bg='black'
+                                                            textColor='grey'
+                                                            h='150px'
+                                                            w='auto'
+                                                        />
+                                                    </a>
+                                                </Flex>
+                                            )}
+
+                                            {/* Show url_overridden_by_dest image if original subreddit post includes one */}
+                                            {!postUrlIsExternalLink && !crossPost && !postData.secure_media?.reddit_video?.fallback_url && postData.url_overridden_by_dest === postData.url && !postThumbnailPhoto && !postData.media_embed?.content && (
+                                                <Flex justify='center' alignItems='center'mt='30px'>
+                                                    <a
+                                                        href={postData.url}
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
+                                                    >
+                                                        <Image
+                                                            src={postData.url_overridden_by_dest}
+                                                            alt={`${postData.subreddit_name_prefixed} - ${postData.title}`}
+                                                            borderRadius='7px'
+                                                            bg='black'
+                                                            textColor='grey'
+                                                            h='150px'
+                                                            w='auto'
+                                                        />
+                                                    </a>
+                                                </Flex>
+                                            )}
+
+                                            {/* Display link to external site when there is no media (photos/videos) */}
+                                            {postUrlIsExternalLink && !postData.secure_media?.reddit_video?.fallback_url && postData.secure_media?.type !== 'youtube.com' && !crossPost && (
+                                                <Flex
+                                                    justify='center'
+                                                    alignItems='center'
+                                                    mt='30px'
+                                                    border='solid thin #d7d7d7'
+                                                    borderRadius='7px'
+                                                    minH='40px'
+                                                    pl='25px'
+                                                    pr='25px'
+                                                    pt='15px'
+                                                    pb='15px'
+                                                >
+                                                    <Text w='100%' textAlign='center' fontSize='14px'>
                                                         <a
                                                             href={postData.url}
                                                             target='_blank'
                                                             rel='noopener noreferrer'
                                                         >
-                                                            <iframe
-                                                                src={postData.secure_media?.reddit_video?.fallback_url}
-                                                                width='300px'
-                                                                height='187px'
-                                                                allowFullScreen
-                                                            />                                                               
+                                                            {postData.url}
                                                         </a>
-                                                    </Flex>
-                                                )}
-                                                {!postData.secure_media?.reddit_video?.fallback_url && postData.thumbnail !== 'self' && postData.thumbnail !== 'default' && (
-                                                    <Flex justify='center' alignItems='center'>
-                                                        <a
-                                                            href={postData.url}
-                                                            target='_blank'
-                                                            rel='noopener noreferrer'
-                                                        >
-                                                            <Image
-                                                                src={postData.thumbnail}
-                                                                alt=''
-                                                                borderRadius='7px'
-                                                                h='150px'
-                                                                w='auto'
-                                                            />
-                                                        </a>
-                                                    </Flex>
-                                                )}
-                                            </Flex>
-                                        </CardBody>
+                                                    </Text>
+                                                </Flex>
+                                            )}
 
-                                        <CardFooter
-                                            justify='space-between'
-                                            flexWrap='wrap'
-                                            sx={{
-                                            '& > button': {
-                                                minW: '136px',
-                                            },
-                                            }}
+                                        </Flex>
+                                    </CardBody>
+
+                                    <CardFooter
+                                        justify='space-between'
+                                        flexWrap='wrap'
+                                        sx={{
+                                        '& > button': {
+                                            minW: '136px',
+                                        },
+                                        }}
+                                    >
+                                        <a
+                                            href={`https://www.reddit.com${postData.permalink}`}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            style={{ width:'100%' }}
                                         >
                                             <Button
                                                 flex='1'
                                                 variant='ghost'
                                                 rightIcon={<IoOpenOutline />}
+                                                w='100%'
                                             >
-                                                <a
-                                                    href={`https://www.reddit.com${postData.permalink}`}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                >
-                                                    Open
-                                                </a>
+                                                Open        
                                             </Button>
-                                        </CardFooter>
-                                    </Card>
-                                )
-                            })
-                        ) : (
-                            <Text>No results found.</Text>
-                        )}
+                                        </a>
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
                     </Flex>
                 </Box>
             )}
         </Box>
     )
 }
+
+export default HomePage;

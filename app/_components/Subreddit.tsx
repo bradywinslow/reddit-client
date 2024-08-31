@@ -16,7 +16,7 @@ import {
     Skeleton,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
-import getSubredditData from '../_reddit/httpRequests';
+import getSubredditData from '../_reddit/getSubredditData';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
