@@ -14,7 +14,7 @@ function generateFiveRandomNumbers() {
         // Check if x has already been added to randomNumbers array
         if (randomNumbers.includes(x)) {
             // If x already included in randomNumbers array, generate a new random number
-            randomNumberGenerator();
+            x = randomNumberGenerator();
         } else{
             // If x not included in randomNumbers array, add it
             randomNumbers.push(x);
