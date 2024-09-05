@@ -15,7 +15,7 @@ import {
     Image,
     Text } from '@chakra-ui/react'
 import { IoOpenOutline } from "react-icons/io5";
-import getHomePageData from '../_reddit/getHomePageData';
+import { getHomePageData, subredditsToDisplayOnHomePage } from '../_reddit/getHomePageData';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
@@ -44,12 +44,7 @@ const renderers: Components = {
     code: ({ children }) => <code style={{ background: '#f4f4f4', border: '1px solid #ddd', borderLeft: '3px solid #ff6314', color: '#666', pageBreakInside: 'avoid', fontFamily: 'monospace', fontSize: '15px', lineHeight: '1.6', marginTop: '10px', maxWidth: '100%', overflow: 'auto', padding: '1em 1.5em', display: 'block', wordWrap: 'break-word' }}>{children}</code>
 }
 
-interface HomePageProps {
-    page: string;
-    subredditName: string;
-}
-
-const HomePage: React.FC<HomePageProps> = ({ page }) => {
+const HomePage = () => {
     const [homePageData, setHomePageData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams();
@@ -57,22 +52,31 @@ const HomePage: React.FC<HomePageProps> = ({ page }) => {
     const [filteredData, setFilteredData] = useState([]);
     
     useEffect(() => {
+        // Fetch data and store in dataToDisplay array; sort dataToDisplay based on time posted starting with most recent first
+        let dataToDisplay: object[] = [];
+        const pagesToFetch = subredditsToDisplayOnHomePage();
+
         const fetchData = async () => {
-            try {
-                const data = await getHomePageData();
-                setHomePageData(data);
-            } catch (error) {
-                console.error('Error fetching subreddit data:', error);
+            for (let i = 0; i < pagesToFetch.length; i++) {
+                try {
+                    const data = await getHomePageData({ params: { page: pagesToFetch[i].page } });
+                    dataToDisplay.push(...data.data.children);
+                    dataToDisplay.sort((a: any, b: any) => b.data.created_utc - a.data.created_utc);
+                } catch (error) {
+                    console.error('Error fetching subreddit data:', error);
+                }
             }
             setIsLoading(false);
+            return dataToDisplay;
         }
+        setHomePageData(dataToDisplay);
 
         fetchData();
-    }, [page]);
+    }, []);
 
     useEffect(() => {
         if (homePageData) {
-            const posts = homePageData?.data?.children || [];
+            const posts = homePageData || [];
             if (query) {
                 setFilteredData(
                     posts.filter((item: any) => 
@@ -105,7 +109,7 @@ const HomePage: React.FC<HomePageProps> = ({ page }) => {
                 <Box h='100vh'>
                     <Text textAlign='center'>No results found.</Text>
                 </Box>
-            ) : (
+            ) : ( // Displays all results because there is no search term
                 <Box h='100vh'>
                     <Flex direction='column' align='center'>
 
@@ -146,7 +150,8 @@ const HomePage: React.FC<HomePageProps> = ({ page }) => {
                                                 <Avatar name={`${postData.author}`} />
 
                                                 <Box>
-                                                    <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
+                                                    <Text fontSize='13px'>{postData.subreddit_name_prefixed} | {timeElapsed}</Text>
+                                                    <Text fontSize='12px'>{postData.author}</Text>
                                                 </Box>
 
                                             </Flex>
@@ -189,7 +194,7 @@ const HomePage: React.FC<HomePageProps> = ({ page }) => {
                                                         <Flex>
                                                             <Flex gap='4' alignItems='center' flexWrap='wrap'>
                                                                 <Box>
-                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
+                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} | {crossPostTimeElapsed}</Text>
                                                                 </Box>
 
                                                             </Flex>

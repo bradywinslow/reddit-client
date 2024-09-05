@@ -157,7 +157,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                 <Avatar name={`${postData.author}`} />
 
                                                 <Box>
-                                                    <Text fontSize='13px'>u/{postData.author} | {timeElapsed}</Text>
+                                                    <Text fontSize='13px'>{postData.author} | {timeElapsed}</Text>
                                                 </Box>
 
                                             </Flex>
@@ -200,7 +200,7 @@ const Subreddit: React.FC<SubredditProps> = ({ page, subredditName }) => {
                                                         <Flex>
                                                             <Flex gap='4' alignItems='center' flexWrap='wrap'>
                                                                 <Box>
-                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} * {crossPostTimeElapsed}</Text>
+                                                                    <Text fontSize='12px' mb='10px'>{crossPost?.subreddit_name_prefixed} | {crossPostTimeElapsed}</Text>
                                                                 </Box>
 
                                                             </Flex>

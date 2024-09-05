@@ -1,4 +1,4 @@
-// import { subredditData } from "./subredditData";
+import { subredditData } from "./subredditData";
 
 // Generate random number between 0 and 16
 function randomNumberGenerator() {
@@ -13,7 +13,7 @@ function generateFiveRandomNumbers() {
         let x = randomNumberGenerator(); 
         // Check if x has already been added to randomNumbers array
         if (randomNumbers.includes(x)) {
-            // If x already included in randomNumbers array, generate a new random number
+            // If x already included in randomNumbers array, generate new random number and assign to x
             x = randomNumberGenerator();
         } else{
             // If x not included in randomNumbers array, add it
@@ -23,15 +23,19 @@ function generateFiveRandomNumbers() {
     return randomNumbers;
 }
 
-console.log(generateFiveRandomNumbers());
-
 // Use random number generator to decide which subreddits to fetch data from
-// Fetch data from subreddits and store in an array
-// Sort data based on time posted starting with most recent
-
-export default async function getHomePageData() {
-    let homePageData = [];
+function subredditsToDisplayOnHomePage() {
+    let subRedditsToDisplayArray = [];
+    let x = generateFiveRandomNumbers();
     
+    for (let i = 0; i < x.length; i++) {
+        subRedditsToDisplayArray.push(subredditData[x[i]]);
+    }
+    return subRedditsToDisplayArray;
+}
+
+// API call
+async function getHomePageData({ params }: { params: { page: string } }) {
     const urlToFetch = `https://www.reddit.com/r/${params.page}.json`;
 
     try {
@@ -51,3 +55,5 @@ export default async function getHomePageData() {
         return null;
     }
 };
+
+export { subredditsToDisplayOnHomePage, getHomePageData };
