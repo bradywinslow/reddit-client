@@ -4,11 +4,11 @@ import { subredditData } from "./subredditData";
 function randomNumberGenerator() {
     return Math.floor((Math.random() * 17));
 }
-// Generate 5 random numbers between 0 and 16 with no overlap
+// Generate 3 random numbers between 0 and 16 with no overlap
 function generateFiveRandomNumbers() {
     let randomNumbers: number[] = [];
 
-    while (randomNumbers.length < 5) {
+    while (randomNumbers.length < 3) {
         // Generate random number x
         let x = randomNumberGenerator(); 
         // Check if x has already been added to randomNumbers array
