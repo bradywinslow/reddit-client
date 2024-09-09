@@ -70,7 +70,6 @@ const HomePage = () => {
             setIsLoading(false);
             return dataToDisplay;
         }
-        console.log(dataToDisplay);
 
         fetchData();
     }, []);
