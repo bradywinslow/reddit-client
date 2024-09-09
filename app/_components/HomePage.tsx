@@ -61,15 +61,16 @@ const HomePage = () => {
                 try {
                     const data = await getHomePageData({ params: { page: pagesToFetch[i].page } });
                     dataToDisplay.push(...data.data.children);
-                    dataToDisplay.sort((a: any, b: any) => b.data.created_utc - a.data.created_utc);
                 } catch (error) {
                     console.error('Error fetching subreddit data:', error);
                 }
             }
+            dataToDisplay.sort((a: any, b: any) => b.data.created_utc - a.data.created_utc);
+            setHomePageData(dataToDisplay);
             setIsLoading(false);
             return dataToDisplay;
         }
-        setHomePageData(dataToDisplay);
+        console.log(dataToDisplay);
 
         fetchData();
     }, []);

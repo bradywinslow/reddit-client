@@ -5,20 +5,14 @@ function randomNumberGenerator() {
     return Math.floor((Math.random() * 17));
 }
 // Generate 3 random numbers between 0 and 16 with no overlap
-function generateFiveRandomNumbers() {
-    let randomNumbers: number[] = [];
+function generateRandomNumbers() {
+    let randomNumbers = new Set<number>();
 
-    while (randomNumbers.length < 3) {
+    while (randomNumbers.size < 3) {
         // Generate random number x
         let x = randomNumberGenerator(); 
-        // Check if x has already been added to randomNumbers array
-        if (randomNumbers.includes(x)) {
-            // If x already included in randomNumbers array, generate new random number and assign to x
-            x = randomNumberGenerator();
-        } else{
-            // If x not included in randomNumbers array, add it
-            randomNumbers.push(x);
-        }
+        // Add to randomNumbers array
+        randomNumbers.add(x);
     }
     return randomNumbers;
 }
@@ -26,10 +20,10 @@ function generateFiveRandomNumbers() {
 // Use random number generator to decide which subreddits to fetch data from
 function subredditsToDisplayOnHomePage() {
     let subRedditsToDisplayArray = [];
-    let x = generateFiveRandomNumbers();
+    let x = generateRandomNumbers();
     
-    for (let i = 0; i < x.length; i++) {
-        subRedditsToDisplayArray.push(subredditData[x[i]]);
+    for (const r of x.values()) {
+        subRedditsToDisplayArray.push(subredditData[r]);
     }
     return subRedditsToDisplayArray;
 }
