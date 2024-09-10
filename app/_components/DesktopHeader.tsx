@@ -4,7 +4,7 @@ import {
     Flex,
     Heading,
     Icon } from '@chakra-ui/react';
-import { SiReddit } from 'react-icons/si';
+import { FaGamepad } from "react-icons/fa6";
 import Link from 'next/link';
 import SearchBar from './SearchBar';
 
@@ -32,7 +32,7 @@ export default function DesktopHeader() {
             >
                 <Link href='/'>
                     <Flex direction='row' align='center' width='100%' gap={2}>
-                        <Icon as={SiReddit} boxSize={7} color='#ff6314' />
+                        <Icon as={FaGamepad} boxSize={9} color='#ff6314' />
                         <Heading as='h1' color='#ff6314' size='md'>Gaming Feed</Heading>
                     </Flex>
                 </Link>
