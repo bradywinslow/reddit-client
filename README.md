@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Reddit Client Gaming Feed
+
+## Website Link
+[Reddit Client Gaming Feed](https://reddit-client-gaming-feed.vercel.app/)
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [How to Use](#how-to-use)
+- [License](#license)
+- [Contact](#contact)
+
+## Introduction
+Reddit Client Gaming Feed is a web application that allows users to explore gaming-related posts from Reddit. The app fetches data from the Reddit API, enabling users to browse gaming content, filter posts based on their interests, and view embedded media, such as videos and images, directly in the app.
+
+## Features
+- **Reddit API Integration**: Fetch and display gaming-related posts directly from the Reddit JSON API.
+- **Search and Filter Functionality**: Use the search bar to filter posts by keyword search.
+- **Embedded Media**: View embedded media such as YouTube videos, Reddit-hosted videos, and images.
+
+## Technologies Used
+- HTML5
+- CSS3
+- TypeScript
+- Next.js
+- Chakra UI
+- Vercel
 
 ## Getting Started
+To run Reddit Client Gaming Feed locally:
 
-First, run the development server:
+1. Clone this repository and navigate to the project directory:
+   ```
+   git clone https://github.com/your-username/reddit-client-gaming-feed.git
+   cd reddit-client-gaming-feed
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Install dependencies:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```
+    npm install
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    ```
+    npm run dev
+    ```
 
-## Learn More
+4. Open `http://localhost:3000` in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## How to Use
+1. Open the Reddit Client Gaming Feed.
+2. Use the search bar to filter through gaming-related posts.
+3. Scroll to read posts and interact with embedded videos and images.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
+This project is licensed under the [MIT License](LICENSE.md) - see the [LICENSE.md](LICENSE.md) file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contact
+- **LinkedIn:** [Brady Winslow](https://www.linkedin.com/in/bradywinslow/)
+- **GitHub:** [bradywinslow](https://github.com/bradywinslow)
+- **Email:** brady.winslow@gmail.com
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Feel free to reach out if you have any questions, feedback, or if you're interested in collaborating!
