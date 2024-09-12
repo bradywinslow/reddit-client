@@ -143,7 +143,7 @@ const HomePage = () => {
                             const crossPostTimeElapsed = convertUtcToTimeElapsed(crossPostTimestamp);
 
                             return (
-                                <Card w={[200, 400, 500, 700]} key={index} mb={7} px='15px'>
+                                <Card w={[325, 400, 500, 700]} key={index} mb={7} px='15px'>
                                     <CardHeader>
                                         <Flex mb='-15px'>
                                             <Flex gap='4' alignItems='center' flexWrap='wrap'>

@@ -26,7 +26,6 @@ export default function SearchBar() {
             params.delete('query');
         }
         replace(`${pathname}?${params.toString()}`);
-        console.log(searchTerm);
     }, 300);
 
     return (
@@ -47,7 +46,7 @@ export default function SearchBar() {
                         variant='outline'
                         placeholder='Search'
                         size='md'
-                        w={[200, 250, 300, 350]}
+                        w={[175, 250, 300, 350]}
                         borderRadius={15}
                         onChange={(e) => {
                             handleSearch(e.target.value);

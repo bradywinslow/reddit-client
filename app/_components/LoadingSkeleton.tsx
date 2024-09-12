@@ -15,7 +15,7 @@ export default function LoadingSkeleton() {
 
     <Box>
         <Flex direction='column' align='center'>
-            <Card w={[200, 400, 500, 700]} mb={7} px='15px' gap='2px'>
+            <Card w={[325, 400, 500, 700]} mb={7} px='15px' gap='2px'>
                 <CardHeader>
                     <Flex>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
