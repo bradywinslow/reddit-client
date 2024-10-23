@@ -1,7 +1,7 @@
 const subredditData = [
     {
         name: 'r/AndroidGaming',
-        path: '/AndroidGaming',
+        path: '/androidgaming',
         page: 'AndroidGaming'
     },
     {
@@ -21,7 +21,7 @@ const subredditData = [
     },
     {
         name: 'r/GamePhysics',
-        path: '/GamePhysics',
+        path: '/gamephysics',
         page: 'GamePhysics'
     },
     {
@@ -31,27 +31,27 @@ const subredditData = [
     },
     {
         name: 'r/Games',
-        path: '/Games',
+        path: '/games',
         page: 'Games'
     },
     {
         name: 'r/Gaming4Gamers',
-        path: '/Gaming4Gamers',
+        path: '/gaming4gamers',
         page: 'Gaming4Gamers'
     },
     {
         name: 'r/GamingDetails',
-        path: '/GamingDetails',
+        path: '/gamingdetails',
         page: 'GamingDetails'
     },
     {
         name: 'r/IndieGaming',
-        path: '/IndieGaming',
+        path: '/indiegaming',
         page: 'IndieGaming'
     },
     {
         name: 'r/MMORPG',
-        path: '/MMORPG',
+        path: '/mmorpg',
         page: 'MMORPG'
     },
     {
@@ -61,7 +61,7 @@ const subredditData = [
     },
     {
         name: 'r/RandomActsOfGaming',
-        path: '/RandomActsOfGaming',
+        path: '/randomactsofgaming',
         page: 'RandomActsOfGaming'
     },
     {
@@ -81,7 +81,7 @@ const subredditData = [
     },
     {
         name: 'r/WebGames',
-        path: '/WebGames',
+        path: '/webgames',
         page: 'WebGames'
     },
 ];
