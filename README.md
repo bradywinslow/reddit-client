@@ -14,6 +14,8 @@
 
 ## Introduction
 Reddit Client Gaming Feed is a web application that allows users to explore gaming-related posts from Reddit. The app fetches data from the Reddit API, enabling users to browse gaming content, filter posts based on their interests, and view embedded media, such as videos and images, directly in the app.
+- Video demo:  
+[![Video demo](https://img.youtube.com/vi/Ixs2bfRP0Sg/0.jpg)](https://www.youtube.com/watch?v=Ixs2bfRP0Sg)
 
 ## Features
 - **Reddit API Integration**: Fetch and display gaming-related posts directly from the Reddit JSON API.
