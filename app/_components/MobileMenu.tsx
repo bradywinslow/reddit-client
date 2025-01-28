@@ -17,7 +17,7 @@ export default function MobileMenu() {
                 bg='white'
             />
             <Flex align='center' justify='center'>
-                <MenuList overflowY='auto' maxH='70vh'>
+                <MenuList overflowY='auto' maxH='70vh' position='absolute'>
                     {subredditData.map((item, index) => {
                         return (
                             <MenuItem
