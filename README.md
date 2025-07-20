@@ -23,9 +23,10 @@ Reddit Client Gaming Feed is a web application that allows users to explore gami
 - **Embedded Media**: View embedded media such as YouTube videos, Reddit-hosted videos, and images.
 
 ## Technologies Used
-- TypeScript
 - Next.js
+- TypeScript
 - Chakra UI
+- Jest
 - Vercel
 
 ## Getting Started
