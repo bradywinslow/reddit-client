@@ -25,7 +25,7 @@ import LoadingSkeleton from './LoadingSkeleton';
 import { useSearchParams } from 'next/navigation';
 import removeZeroWidthSpaces from '../_reddit/removeZeroWidthSpaces';
 import extractYouTubeUrl from '../_reddit/extractYouTubeUrl';
-import IsExternalLink from '../_reddit/IsExternalLink';
+import isExternalLink from '../_reddit/isExternalLink';
 import convertUtcToTimeElapsed from '../_reddit/convertUtcToTimeElapsed';
 
 const renderers: Components = {
@@ -130,7 +130,7 @@ const HomePage = () => {
 
                             // Check if url is an external link
                             const postUrl = postData.url;
-                            const postUrlIsExternalLink = IsExternalLink(postUrl);
+                            const postUrlIsExternalLink = isExternalLink(postUrl);
 
                             // Extract YouTube URL if YouTube video is included in subreddit post
                             const stringToExtractUrlFrom = postData.media_embed?.content;

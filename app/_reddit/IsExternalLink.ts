@@ -1,5 +1,5 @@
 // Checks if url field is an external link
-export default function IsExternalLink(postUrl: string) {
+export default function isExternalLink(postUrl: string) {
     if (
         postUrl.includes('https://') &&
         !postUrl.endsWith('.jpg') &&
