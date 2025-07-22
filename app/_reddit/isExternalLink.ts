@@ -2,8 +2,7 @@
 export default function isExternalLink(postUrl: string) {
     if (
         postUrl.includes('https://') &&
-        !postUrl.endsWith('.jpg') &&
-        !postUrl.endsWith('.png') &&
+        !postUrl.includes('redditmedia.com') &&
         !postUrl.includes('.reddit.com') &&
         !postUrl.includes('.redd.it')
     ) {
